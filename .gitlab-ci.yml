@@ -1,34 +1,19 @@
+stages:
+    - build
+    - test
 
-stages:          
-  - build
-  - test
-  - deploy
+build:
+    stage: build
+    script:
+        - echo "Building"
+        - mkdir build
+        - touch build/info.txt
+    artifacts:
+        paths:
+            - build/
 
-build-job:      
-  stage: build
-  tags:
-    - docker
-  script:
-    - cd server
-    - npm install
-
-
-unit-test-job:  
-  stage: test    
-  tags:
-    - docker
-  services:
-    - name: mvertes/alpine-mongo:latest
-      alias: mongo
-  variables:
-    MONGODB_URI: "mongodb://mongo:27017/serverTestDB"
-  script:
-    - cd server
-    - npm run ci-test
-
-deploy-job:      
-  stage: deploy  
-  environment: production
-  script:
-    - echo "Deploying application..."
-    - echo "Application successfully deployed."
+test:
+    stage: test
+    script:
+        - echo "Testing"
+        - test -f "build/info.txt"
