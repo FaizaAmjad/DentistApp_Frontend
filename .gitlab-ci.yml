@@ -1,4 +1,17 @@
-image: $CI_REGISTRY/courses/dit355/2023/student-teams/dit356-2023-03/dentist-app
+variables:
+  DOCKER_REGISTRY: registry.git.chalmers.se
+  DOCKER_IMAGE: "${DOCKER_REGISTRY}/courses/dit355/student-teams/dit356-2023-03/dentist-app"
+
+before_script:
+  - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$DOCKER_REGISTRY"
+
+build_image:
+  stage: build
+  script:
+    - docker pull "$DOCKER_IMAGE" || true
+    - docker build -t "$DOCKER_IMAGE" .
+    - docker push "$DOCKER_IMAGE"
+    
 stages:
     - build
     - test
