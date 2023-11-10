@@ -54,5 +54,26 @@ router.delete("/:id", async (req, res) => {
     }
 });
 
+//Patch method to change Availability of a specific Slot
+router.patch("/:id", async (req, res) => {
+    try {
+
+        //Will first check if the slot even exists before editing
+        const slot = await Slots.findById(req.params.id);
+
+        if(!slot){ 
+            return res.status(404).json({ error: "Slot not found" }); }
+
+    //To turn Availability On or Off(Toggle)
+        slot.availability= !slot.availability;
+        const updatedSlot = await slot.save();
+        
+    
+        res.status(200).json(updatedSlot);
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+});
+
 
 module.exports = router;
