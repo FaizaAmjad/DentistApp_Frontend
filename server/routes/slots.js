@@ -12,3 +12,17 @@ router.get("/", async (req, res) => {
     }
 });
 
+//Get a specific slot by entered ID
+router.get("/:id", async (req, res) => {
+    try {
+        const id = req.params.id;
+        
+        const slot = await Slots.findById(id);
+        if(!slot){ 
+                    return res.status(404).json({ error: "Slot not found" }); 
+                 }
+        res.status(200).json(slot);
+    } catch (error) {
+        res.status(404).json({ error: "Slot not found" });
+    }
+});
