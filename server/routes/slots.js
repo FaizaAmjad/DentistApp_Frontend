@@ -26,3 +26,19 @@ router.get("/:id", async (req, res) => {
         res.status(404).json({ error: "Slot not found" });
     }
 });
+
+//Creating a new Slot - We will use it to make them available
+router.post("/", async (req, res) => {
+    try {
+        const newSlot = new Slots( { time: req.body.time, availability: req.body.availability } )
+        const savedSlot = await newSlot.save();
+        
+        res.status(200).json(savedSlot);
+    } catch (error) {
+        res.status(404).json({ error: error.message });
+    }
+});
+
+
+//Deleting a specific slot by ID - We will use it to make a slot unavailable
+router.delete({});
