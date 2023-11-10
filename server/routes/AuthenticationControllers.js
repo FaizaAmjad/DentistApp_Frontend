@@ -2,7 +2,7 @@ var express = require("express");
 var mongoose = require("mongoose");
 var router = express.Router();
 var bcrypt = require("bcryptjs");
-const encryption = require("../utilities/crypto-utils");
+const encryption = require("../utilities/crypto-utils.js");
 const User = require("../schemas/users.js");
 const Dentist = require("../schemas/dentists.js");
 

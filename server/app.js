@@ -10,7 +10,8 @@ const morgan = require("morgan");
 const path = require("path");
 const cors = require("cors");
 const history = require("connect-history-api-fallback");
-const Authentication = require("./routes/AuthenticationController");
+const Authentication = require("./routes/AuthenticationControllers");
+const slotsControllers = require("./routes/slotsControllers");
 const authorizationMiddleware = require("./middlewares/AuthorizationMiddleware");
 const methodOverride = require("method-override");
 const hateoasLinker = require("express-hateoas-links");
@@ -34,6 +35,8 @@ app.get('/api', (req, res) => {
 }) 
 app.use("/api/v1/auth", Authentication);
 app.use("/api/v1/dentists", authorizationMiddleware, dentistsControllers);
+app.use("/api/v1/slots", slotsControllers);
+
 
 
 
