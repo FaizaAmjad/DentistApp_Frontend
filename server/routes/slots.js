@@ -19,8 +19,8 @@ router.get("/:id", async (req, res) => {
         
         const slot = await Slots.findById(id);
         if(!slot){ 
-                    return res.status(404).json({ error: "Slot not found" }); 
-                 }
+                    return res.status(404).json({ error: "Slot not found" }); }
+
         res.status(200).json(slot);
     } catch (error) {
         res.status(404).json({ error: "Slot not found" });
@@ -32,7 +32,7 @@ router.post("/", async (req, res) => {
     try {
         const newSlot = new Slots( { time: req.body.time, availability: req.body.availability } )
         const savedSlot = await newSlot.save();
-        
+
         res.status(200).json(savedSlot);
     } catch (error) {
         res.status(404).json({ error: error.message });
@@ -41,4 +41,18 @@ router.post("/", async (req, res) => {
 
 
 //Deleting a specific slot by ID - We will use it to make a slot unavailable
-router.delete({});
+router.delete("/:id", async (req, res) => {
+    try {
+        const id = req.params.id;
+        const deletedSlot = await Slots.findByIdAndDelete(id);
+        if(!deletedSlot){ 
+                         return res.status(404).json({ error: "Slot not found" }); }
+        
+        res.status(204).send();
+    } catch (error) {
+        res.status(404).json({ error: "Slot not found" });
+    }
+});
+
+
+module.exports = router;
