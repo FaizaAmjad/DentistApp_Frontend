@@ -9,11 +9,12 @@ const cors = require("cors");
 const history = require("connect-history-api-fallback");
 const Authentication = require("./routes/AuthenticationControllers");
 const slotsControllers = require("./routes/slotsControllers");
+const dentistsControllers = require("./routes/dentistsControllers");
 const authorizationMiddleware = require("./middlewares/AuthorizationMiddleware");
 const methodOverride = require("method-override");
 const hateoasLinker = require("express-hateoas-links");
-const mqtt = require("mqtt")  // require mqtt
-const dentistClient = mqtt.connect("test.mosquitto.org")
+//const mqtt = require("mqtt")  // require mqtt
+//const dentistClient = mqtt.connect("test.mosquitto.org")
 // Creating express object
 const app = express();
 
