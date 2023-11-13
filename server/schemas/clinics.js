@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-const Dentists = require("./dentists.js");
+const Dentist = require("./dentists.js");
 
 /**
  * clinicName: The name of the dental clinic
@@ -14,9 +14,10 @@ const clinicSchema = new Schema({
     },
     address: {
         type: String,
-        required: [true, "Address must be registered"]
+        required: [true, "Address must be registered"],
+        uniq:true
     },
-    workingDentists: [
+    Dentist: [
         {
             type: Schema.Types.ObjectId,
             ref: "Dentists",
