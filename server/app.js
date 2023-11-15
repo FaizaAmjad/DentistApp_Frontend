@@ -26,6 +26,19 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
+dentistClient.on("connect", () => {
+    dentistClient.subscribe("presence", (err) => {
+      if (!err) {
+        dentistClient.publish("presence", "Hello mqtt");
+      }
+    });
+  });
+  
+  dentistClient.on("message", (topic, message) => {
+    // message is Buffer
+    console.log(message.toString());
+    dentistClient.end();
+  });
 
 // Handling GET request
 app.get('/api', (req, res) => { 
