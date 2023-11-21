@@ -22,13 +22,13 @@
 }
 
 .tab {
-  color: rgba(11, 11, 199, 0.831);
+  color: rgba(255, 255, 255, 0.831);
   transition: color 0.3s ease; 
   text-decoration: none; 
   padding: 2%; 
 }
 
 .tab:hover {
-  color: rgb(8, 8, 136); 
+  color: rgb(155, 155, 155); 
 }
 </style>

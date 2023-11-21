@@ -1,8 +1,18 @@
 <script setup>
-import {RouterView } from 'vue-router'
+import { RouterView } from 'vue-router'
+</script>
+
+<script>
+import WebHeaderVue from './components/WebHeader.vue'
+export default {
+  components: {
+    WebHeaderVue
+  }
+}
 </script>
 
 <template>
+  <WebHeaderVue/>
   <RouterView />
 </template>
 

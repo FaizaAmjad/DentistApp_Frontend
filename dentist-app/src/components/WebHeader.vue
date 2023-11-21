@@ -2,7 +2,7 @@
   <header class="header">
     <b-row>
       <b-col cols="1">
-        <img src="../assets/toothFerry.png" alt="Logo" class="img-fluid; height: auto" />
+        <img src="../assets/dentist-logo.png" alt="Logo" class="logo" />
       </b-col>
       <b-col class="navtab">
         <NavTabs/>
@@ -27,12 +27,17 @@ export default {
   position: sticky;
     top: 0;
     z-index: 1000;
-    background: #025b7e69;
+    background: #0a57ca;
 }
 
 .navtab{
   display: flex;
   align-items: center;
+}
+
+.logo{
+  height: 100%;
+  width: 100%
 }
 
 </style>
