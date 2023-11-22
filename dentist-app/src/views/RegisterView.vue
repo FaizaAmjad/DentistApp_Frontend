@@ -92,22 +92,22 @@ export default {
   },
   methods: {
     onRegister() {
-      if(this.validPassword && this.validateEmail()){
+      if(this.validPassword() && this.validateEmail()){
         // replace with hashing password and post function and this.$router.push('abc')
-        alert('Registered')
-      } else {
         this.name = ''
         this.emailAddress = ''
         this.password = ''
         this.repeatedPassword = ''
-      }
-      
+        alert('Registered')
+      }       
       
     }, validPassword(){
     if (this.password == this.repeatedPassword){
       return true
     } else {
       alert('Passwords need to match')
+      this.password = ''
+      this.repeatedPassword = ''
       return false
     }
   },
@@ -116,14 +116,10 @@ export default {
 
       if(emailPattern.test(this.emailAddress)){
         return true
-      } else {
+      } else {  
         alert('Invalid email')
+        this.emailAddress = ''
         return false
-      }
-    },
-    alertInput(){
-      if (!this.name){
-        alert('Name cannot be empty')
       }
     }
   }
