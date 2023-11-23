@@ -52,7 +52,7 @@
           label-cols-lg="3"
           content-cols-sm
           content-cols-lg="7"
-          label="Clinc"
+          label="Clinic"
           label-for="clinicDropdown">
             <b-dropdown id="clinicDropdown" text="Select clinic" block variant="primary" lazy>
               <b-dropdown-item-button v-for="clinic in this.clinics" :key="clinic.id" @click="this.clinic = clinic">{{clinic.name}}</b-dropdown-item-button>
@@ -74,6 +74,7 @@
 export default {
   mounted() {
     document.body.style.backgroundColor = '#989898'
+    this.connectMQTT()
   },
   data() {
     return {
@@ -82,7 +83,8 @@ export default {
       password: '',
       repeatedPassword: '',
       clinic: null, // type may be incorrect.
-      clinics: []
+      clinics: [],
+      mqttClient: null
     }
   },
   computed:{
@@ -91,14 +93,57 @@ export default {
     }
   },
   methods: {
+    connectMQTT(){
+      // accessing global varibles/libraries defined in main.js
+      const mqtt = this.$mqtt
+      const broker = this.$broker
+
+      // mkaing broker instance
+      this.mqttClient = mqtt.connect(broker)
+
+      //log on connection
+      this.mqttClient.on('connect', () => {
+        console.log('MQTT connected');
+      })
+
+      //log errors
+      this.mqttClient.on('error', (err) => {
+        console.error('MQTT connection error:', err);
+      })
+    },
+    disconnectMQTT() {
+      if (this.mqttClient) {
+        this.mqttClient.end()
+        console.log('Disconnected from broker')
+      }
+    },
     onRegister() {
       if(this.validPassword() && this.validateEmail()){
-        // replace with hashing password and post function and this.$router.push('abc')
-        this.name = ''
-        this.emailAddress = ''
-        this.password = ''
-        this.repeatedPassword = ''
-        alert('Registered')
+        try {
+
+          const userData = {
+            name: this.name,
+            email: this.emailAddress,
+            password: this.password
+            // clinic: this.clinic
+          }
+          const jsonUserData = JSON.stringify(userData)
+
+          this.mqttClient.publish('user/register-dentist', jsonUserData, { qos: 1})
+          /*
+          this.name = ''
+          this.emailAddress = ''
+          this.password = ''
+          this.repeatedPassword = ''
+          */
+          alert('Registered')
+          this.disconnectMQTT()
+          // change to main page for dentist
+          // $this.router.push('abc')
+        } catch (error) {
+          alert('Register unsuccessful')
+        }
+        
       }       
       
     }, validPassword(){
