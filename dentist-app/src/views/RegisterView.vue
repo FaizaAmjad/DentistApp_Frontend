@@ -120,7 +120,6 @@ export default {
     onRegister() {
       if(this.validPassword() && this.validateEmail()){
         try {
-
           const userData = {
             name: this.name,
             email: this.emailAddress,
@@ -140,6 +139,7 @@ export default {
           this.disconnectMQTT()
           // change to main page for dentist
           // $this.router.push('abc')
+          window.location.reload()
         } catch (error) {
           alert('Register unsuccessful')
         }
