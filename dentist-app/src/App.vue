@@ -4,20 +4,23 @@ import HomeView from './views/HomeView.vue';
 </script>
 
 <template>
-  <header>
+
+ <header>
     <img alt="logo" class="logo" src="#" width="125" height="125" />
 
+    <RouterView />
     <div class="wrapper">
       <HomeView/>
 
       <nav>
         <RouterLink to="/">Home</RouterLink>
         <RouterLink to="/about">About</RouterLink>
+        <RouterLink to="/login">LogIn</RouterLink>
+
       </nav>
     </div>
   </header>
 
-  <RouterView />
 </template>
 
 <style scoped>
