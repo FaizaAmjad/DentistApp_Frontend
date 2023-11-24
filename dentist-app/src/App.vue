@@ -1,26 +1,19 @@
 <script setup>
-import { RouterLink, RouterView } from 'vue-router'
-import HomeView from './views/HomeView.vue';
+import { RouterView } from 'vue-router'
+</script>
+
+<script>
+import WebHeaderVue from './components/WebHeader.vue'
+export default {
+  components: {
+    WebHeaderVue
+  }
+}
 </script>
 
 <template>
-
- <header>
-    <img alt="logo" class="logo" src="#" width="125" height="125" />
-
-    <RouterView />
-    <div class="wrapper">
-      <HomeView/>
-
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-        <RouterLink to="/login">LogIn</RouterLink>
-
-      </nav>
-    </div>
-  </header>
-
+  <WebHeaderVue/>
+  <RouterView />
 </template>
 
 <style scoped>
