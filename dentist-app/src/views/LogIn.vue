@@ -4,14 +4,48 @@ export default {
     return {
       email: '',
       password: '',
+      loginError: false,
     };
   },
   methods: {
-    handleSubmit() {
+    async handleSubmit() {
       // Handle form submission here- will connect it to dentist data and account
+
       console.log('Email:', this.email);
       console.log('Password:', this.password);
+      try {
+        // Call your authentication API gateway here 
+        // For simplicity, let's assume a successful login
+        const response = await this.authenticateUser();
+        
+        // Check if the authentication is successful
+        if (response.success) {
+          console.log('Login successful');
+          // Redirect to the user page which has to be created or homepage for THAT dentist
+          // this.$router.push('/dashboard');
+        } else {
+          console.log('Login failed');
+          this.loginError = true;
+        }
+      } catch (error) {
+        console.error('Error during authentication', error);
+        this.loginError = true;
+      }
     },
+
+    async authenticateUser() {
+      // Simulating an asynchronous authentication process
+      return new Promise((resolve) => {
+        // actual authentication logic here- checking with api gateway if database contains this user
+        // For simplicity, returning a simulated response
+        setTimeout(() => {
+          // Simulated response (replace with actual response from server)
+          resolve({ success: true });
+        }, 1000);
+      });
+    },
+  
+
   },
 };
 
