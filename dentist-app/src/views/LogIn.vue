@@ -18,6 +18,9 @@ export default {
 </script>
 
 <template>  
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
 <div class="background">
   <div class="container">
 
@@ -51,40 +54,42 @@ export default {
 </template>
 
 <style scoped>
-body {
-  padding: 0;
-  margin: 0;
-}
+
 h1 {
   margin: 0;
   padding: 0;
   font-weight: 900;
   font-family: Georgia, 'Times New Roman', Times, serif;
-  color: brown;
+  color: rgb(13, 29, 148);
 }  
 
 h2{
- font-size: larger;
+ font-size: large;
  margin-bottom: 40px;
 }
 .background{
   background-color: rgba(73, 181, 235, 0.903);
-  margin-top: 0px;
-  margin-bottom: 0px;
+  padding: 3%;
+  min-height: 100vh;
+  box-sizing: border-box;
 }
 .container {
   
   justify-content: center;
   align-items: center;
   text-align: center;
-  height: 80vh;
+  height: 70vh;
   border-radius:10%;
   border-color: black;
 }
 .login-box{
   background-color: white;
-  margin: 0;
-  padding: 150px;
+  text-align: center;
+  margin: center;
+  font-style:initial;
+  font-weight: 600;
+  padding-block: 0;
+  padding: 20%;
   border-width: 10px;
   border-style:initial;
   border-radius: 20px;
@@ -93,6 +98,16 @@ h2{
 .create-account-prompt{
   font-size: small;
   margin-top: 20px;
+}
+
+.hyperlink{
+  color: rgb(76, 13, 148);
+}
+
+@media (max-width: 768px) {
+  .login-box {
+    padding: 5%;
+  }
 }
 
 </style>
