@@ -24,7 +24,7 @@ export default {
     <div class="login-box">
   
       <h1>Log In</h1>
-      <h2 style="font-size: larger;">Log in to get started with your work!</h2> 
+      <h2>Log in to get started with your work!</h2> 
   
       <b-form @submit="handleSubmit">
           <b-form-group label="Email" label-for="email" label-cols-md="2">
@@ -40,7 +40,7 @@ export default {
 
 
      <div class="create-account-prompt">
-      <p>Don't have an account? Create an account.</p>
+      <p>Don't have an account?   <router-link to="/register" div class="hyperlink"> Create an account.</router-link> </p>
      </div>
 
     
@@ -63,6 +63,10 @@ h1 {
   color: brown;
 }  
 
+h2{
+ font-size: larger;
+ margin-bottom: 40px;
+}
 .background{
   background-color: rgba(73, 181, 235, 0.903);
   margin-top: 0px;
@@ -79,7 +83,8 @@ h1 {
 }
 .login-box{
   background-color: white;
-  padding: 200px;
+  margin: 0;
+  padding: 150px;
   border-width: 10px;
   border-style:initial;
   border-radius: 20px;
@@ -87,6 +92,7 @@ h1 {
 }
 .create-account-prompt{
   font-size: small;
+  margin-top: 20px;
 }
 
 </style>
