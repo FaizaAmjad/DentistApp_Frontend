@@ -3,9 +3,14 @@
     <h1>
       Welcome dentist!
     </h1>
+    <!--:key="events.length" is here to force the calendar to update to show changes without page reload since to connection to backend-->
     <Qalendar 
+    :key="events.length" 
     :events="events" 
-    :config="config" />
+    :config="config" 
+    @event-was-dragged="updateEditedEvent"
+    @event-was-resized="updateEditedEvent" 
+    @delete-event="deleteEvent" />
   </div>
 </template>
 
@@ -48,6 +53,15 @@ export default {
     }
   },
   methods: {
+    updateEditedEvent(updatedEvent) {
+
+      const index = this.events.findIndex(event => event.id === updatedEvent.id)
+      if (index !== -1) {
+        this.events.splice(index, 1, updatedEvent)
+        alert(`Event was dragged and updated: ${JSON.stringify(updatedEvent)}`)
+      }
+      // TODO: send updated events back to DB
+    },
     populateEvents() {
 
       this.events = [
@@ -95,6 +109,15 @@ export default {
         issue:
       }
       */
+    },
+    deleteEvent(eventId) {
+      const index = this.events.findIndex(event => event.id === eventId)
+      if (index !== -1) {
+        this.events.splice(index, 1)
+        alert(`Event was deleted: ${JSON.stringify(eventId)}`)
+        alert(`${JSON.stringify(this.events)}`)
+      }
+      // TODO: send updated events back to DB
     }
   }
 
