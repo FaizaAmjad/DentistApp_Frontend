@@ -5,8 +5,9 @@
         <div class="wrapper">
           <nav >
             <RouterLink class="tab" to="/">Home</RouterLink>
-            <RouterLink class="tab" to="/about">About</RouterLink>
             <RouterLink class="tab" to="/register">Register</RouterLink>
+            <RouterLink class="tab" to="/login">LogIn</RouterLink>
+
           </nav>
         </div>
       </b-col>
