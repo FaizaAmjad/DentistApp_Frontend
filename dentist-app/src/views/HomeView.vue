@@ -1,8 +1,105 @@
-<script setup>
-</script>
-
 <template>
-  <main>
-    <h1>Welcome to dentist App</h1>
-  </main>
+  <div>
+    <h1>
+      Welcome dentist!
+    </h1>
+    <Qalendar 
+    :events="events" 
+    :config="config" />
+  </div>
 </template>
+
+<script>
+import { Qalendar } from "qalendar"
+
+export default {
+  mounted() {
+    document.body.style.backgroundColor = '#989898',
+      this.populateEvents()
+  },
+  components: {
+    Qalendar,
+  },
+  data() {
+    return {
+      // Qalendar documentation: https://tomosterlund.github.io/qalendar/guide.html
+
+      config: {
+        week: {
+          startsOn: 'monday',
+          nDays: 5,
+        },
+        month: {
+          showTrailingAndLeadingDates: false,
+        },
+        locale: 'en-US',
+        style: {
+          fontFamily: 'Nunito'
+        },
+        defaultMode: 'week',
+        isSilent: true,
+        showCurrentTime: true,
+        dayBoundaries: {
+          start: 8,
+          end: 17,
+        }
+      },
+      events: []
+    }
+  },
+  methods: {
+    populateEvents() {
+
+      this.events = [
+        {
+          title: "Root Canal",
+          with: "Jane Doe",
+          time: { start: "2023-11-28 12:05", end: "2023-11-28 13:35" },
+          color: "yellow",
+          isEditable: true,
+          id: "10f",
+          description: "Patient doesn't want their teeth"
+        },
+        {
+          title: "General checkup",
+          with: "Jack Sparrow",
+          time: { start: "2023-11-29 10:05", end: "2023-11-29 12:35" },
+          color: "blue",
+          isEditable: true,
+          id: "11f",
+          description: "Patient wants more teeth"
+        }
+      ]
+      /*
+      ^^^ replace with API call to populate events, possibly with for loop to populate events in the correct format
+
+      for (appointment in appointments) {
+      title: General type of appointment (Cleaning, root canal, etc.)so appointment.type,
+      with: appointment.patient.name,
+      time: { start: appointment.startTime, end: appointment.endTime },
+      color: "green", <-- possibly dependent on general type of appointment
+      isEditable: true,
+      id: UUID,
+      description: appointment.issue
+      }
+
+      Assumed format 
+
+      appointment: {
+        type:
+        patient: {
+          name:
+        }
+        startTime:
+        endTime:
+        issue:
+      }
+      */
+    }
+  }
+
+}
+</script>
+<style>
+@import "qalendar/dist/style.css";
+</style>
