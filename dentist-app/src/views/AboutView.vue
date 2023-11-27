@@ -6,35 +6,35 @@
       <h1>About Tooth Fairy Dentist Hub</h1>
       <h3>Welcome to our world of dental excellence and care.</h3>
       
-      <p class="about-description"> 
+      <h3 class="about-description"> 
         Welcome to Tooth Fairy Dentist Hub, the exclusive platform for registered dentists affiliated with the Tooth Fairy organization in Gothenburg.
-      </p>
+      </h3>
      
       <div class="about-text">
-         <p>🦷 Our Mission:</p>
-         <p>
+         <h4>🦷 Our Mission:</h4>
+         <h5>
            Connected to numerous clinics, Tooth Fairy simplifies the appointment process. Dentists can manage their schedules, view bookings, receive notifications, and seamlessly handle cancellations.
-         </p> 
+         </h5> 
       
       
-         <p>💙 Dentist-Focused Features:</p>
-         <p>
+         <h4>💙 Dentist-Focused Features:</h4>
+         <h5>
            This platform empowers dentists to showcase availability, manage appointments, and attend to emergency cases. A unified hub for convenient control and a touch of professional magic.
-         </p>
+         </h5>
 
-         <p>🌟 Why Choose Us:</p>
-         <p>
-           At Tooth Fairy, we prioritize the comfort and efficiency of our dentists. Experience the ease of having everything in one place, designed with care for our dental professionals.
-         </p>
+         <h4>🌟 Why Choose Us:</h4>
+         <h5>
+           At Tooth Fairy, we prioritize the comfort and efficiency of our dentists. Experience the ease of having everything in one place, designed with care for our dental professionals. 
+         </h5>
 
-         <p>🔗 Get Started:</p>
-         <p> 
+         <h4>🔗 Get Started:</h4>
+         <h5> 
           Join Tooth Fairy Dentist Hub and discover a world of streamlined dental practice management!
-         </p>
+         </h5>
 
-         <p>
+         <h4>
           Because your success is our priority. 🌈✨
-         </p>
+         </h4>
 
       </div> 
      </div>
@@ -57,6 +57,7 @@
 .about {
     text-align: center;
     padding: 20px;
+    
   }
 
   h1 {
@@ -65,21 +66,27 @@
 
   h3 {
     font-size: 18px;
-    font-style: italic;
     color: rgb(45, 5, 85);
     margin: 20px 0;
     margin-bottom: 40px;
   }
-  p{
-    font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
-    font-weight: 500;
+  h4{
+    font-weight: 400;
+    margin-bottom: 15px;
+  }
+  h5{
+    font-weight: 300;
     margin-bottom: 15px;
   }
   .about-text{
     text-align: left;
   }
-  .about-description {
-  font-weight: 800;
-}
+
+  .about-description{
+    color: black;
+    font-style: normal;
+  }
+
+
 
 </style>
