@@ -1,8 +1,5 @@
-<script setup>
-import { RouterView } from 'vue-router'
-</script>
-
 <script>
+import { RouterView } from 'vue-router'
 import WebHeaderVue from './components/WebHeader.vue'
 import WebFooter from './components/WebFooter.vue';
 export default {
