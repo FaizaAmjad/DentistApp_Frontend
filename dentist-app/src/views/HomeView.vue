@@ -4,11 +4,11 @@
     <Qalendar :key="calendarKey" :events="events" :config="config" @event-was-dragged="updateEditedEvent"
       @event-was-resized="updateEditedEvent" @delete-event="deleteEvent" @edit-event="storeEvent" />
 
-    <b-modal v-model="showModal" id="modal-1" title="Edit event" @ok="editEvent">
+    <b-modal v-model="showModal" id="modal-1" title="Edit event" @ok="editEvent" @hide="resetModal">
       <p>Change the setting you wish to alter</p>
       <b-row>
         <b-col>
-          <b-dropdown id="generalType" text="General type of appointment" block variant="primary" lazy>
+          <b-dropdown id="generalType" text="General type of appointment" block variant="outline-primary" lazy>
             <b-dropdown-item-button @click="changeEventType('Cleaning')">Cleaning</b-dropdown-item-button>
             <b-dropdown-item-button @click="changeEventType('Checkup')">Checkup</b-dropdown-item-button>
             <b-dropdown-item-button @click="changeEventType('Emergency appointment')">Emergency appointment
@@ -18,7 +18,7 @@
           </b-dropdown>
         </b-col>
         <b-col>
-          <b-dropdown id="colorSelect" text="Color" block variant="primary" lazy>
+          <b-dropdown id="colorSelect" text="Color" block variant="outline-primary" lazy>
             <b-dropdown-item-button @click="changeColorScheme('lightBlue')">Light Blue </b-dropdown-item-button>
             <b-dropdown-item-button @click="changeColorScheme('darkBlue')">Dark Blue</b-dropdown-item-button>
             <b-dropdown-item-button @click="changeColorScheme('lightGreen')">Light Green</b-dropdown-item-button>
@@ -32,26 +32,31 @@
           </b-dropdown>
         </b-col>
       </b-row>
-      <b-form-input placeholder="Description" id="eventDescription" v-model="this.newEvent.description"
-        type="text"></b-form-input>
-      <!--
+      <b-row>
+        <b-col style="margin-top: 2%; margin-bottom: 2%">
+          <label for="eventDescription">Description</label>
+          <b-form-input placeholder="Description" id="eventDescription" v-model="this.newEvent.description"
+            type="text"></b-form-input>
+        </b-col>
+      </b-row>
       <b-row>
         <b-col>
-          <label for="startDate">Start date</label>
-          <b-form-datepicker id="startDate" v-model="value" class="mb-2"></b-form-datepicker>
+          <label for="startDate">Start date and time</label>
+          <VueDatePicker id="startDate" v-model="this.newEventTime.startTime" class="mb-2"></VueDatePicker>
         </b-col>
         <b-col>
-          <label for="endDate">End date</label>
-          <b-form-datepicker class="datepicker" id="endDate" v-model="value"></b-form-datepicker>
+          <label for="endDate">End date and time</label>
+          <VueDatePicker class="datepicker" id="endDate" v-model="this.newEventTime.endTime"></VueDatePicker>
         </b-col>
-      </b-row>-->
+      </b-row>
     </b-modal>
   </div>
 </template>
 
 <script>
 import { Qalendar } from "qalendar"
-
+import VueDatePicker from '@vuepic/vue-datepicker'
+import '@vuepic/vue-datepicker/dist/main.css'
 export default {
   mounted() {
     document.body.style.backgroundColor = '#989898',
@@ -59,6 +64,7 @@ export default {
   },
   components: {
     Qalendar,
+    VueDatePicker
   },
   data() {
     return {
@@ -74,7 +80,7 @@ export default {
         },
         locale: 'en-US',
         style: {
-          fontFamily: 'Nunito',
+          fontFamily: 'Arial',
           colorSchemes: {
             lightBlue: {
               color: "#fff",
@@ -123,7 +129,7 @@ export default {
         showCurrentTime: true,
         dayBoundaries: {
           start: 8,
-          end: 17,
+          end: 18,
         }
       },
       events: [],
@@ -137,7 +143,11 @@ export default {
         id: " ",
         description: " "
       },
-      calendarKey: 0
+      calendarKey: 0,
+      newEventTime: {
+        startTime: null,
+        endTime: null
+      }
     }
   },
   methods: {
@@ -158,7 +168,7 @@ export default {
           title: "Root Canal",
           with: "Jane Doe",
           time: { start: "2023-11-28 12:05", end: "2023-11-28 13:35" },
-          colorScheme: "lightBlue",
+          colorScheme: "red",
           isEditable: true,
           id: "10f",
           description: "Patient doesn't want their teeth"
@@ -215,10 +225,31 @@ export default {
       /*
       // not allowing the changing of patient here
       // same id so same document in the DB
+      */
 
-      // date and time is the same now but should be able to be 
-      // changed later after figuring out how to get datepick to show in the modal
-      // clear newEvent after saving to DB
+      const startTime = this.newEventTime.startTime
+      const endTime = this.newEventTime.endTime
+
+      // store old times to use if not changed
+      var formattedStartTime = oldEvent.time.start
+      var formattedEndTime = oldEvent.time.end
+
+      // format dates if changed
+      if(this.newEventTime.startTime !== this.newEvent.time.start){
+        formattedStartTime = this.formatDate(startTime)
+      }
+      
+      if(this.newEventTime.endTime !== this.newEvent.time.end){
+        formattedEndTime = this.formatDate(endTime)
+      } 
+
+      // alert(`Formatted Start Time: ${formattedStartTime}\nFormatted End Time: ${formattedEndTime}`)
+      
+      // update newEvent with new dates
+      this.newEvent.time.start = formattedStartTime
+      this.newEvent.time.end = formattedEndTime
+      /*
+      // saving to DB
       // send notification to patient
       */
       this.events.push(this.newEvent)
@@ -235,8 +266,12 @@ export default {
     },
     storeEvent(oldEventId) {
       try {
+        this.newEventTime.startTime = new Date()
+        this.newEventTime.endTime = new Date()
         this.showModal = !this.showModal
         this.newEvent = this.events.find((event) => event.id === oldEventId)
+        this.newEventTime.startTime = this.newEvent.time.start
+        this.newEventTime.endTime = this.newEvent.time.end
       } catch (err) {
         console.log(err)
       }
@@ -248,6 +283,30 @@ export default {
     changeColorScheme(colorScheme) {
       this.newEvent.colorScheme = colorScheme;
     },
+    resetModal() {
+      this.newEvent = {
+        title: " ",
+        with: " ",
+        time: { start: " ", end: " " },
+        colorScheme: " ",
+        isEditable: true,
+        id: " ",
+        description: " "
+      }
+      this.newEventTime = {
+        start: { date: "", time: "" },
+        end: { date: "", time: "" }
+      }
+    },
+    formatDate(date) {
+      const year = date.getFullYear();
+      const month = (`0${date.getMonth() + 1}`).slice(-2)
+      const day = (`0${date.getDate()}`).slice(-2)
+      const hours = (`0${date.getHours()}`).slice(-2)
+      const minutes = (`0${date.getMinutes()}`).slice(-2)
+
+      return `${year}-${month}-${day} ${hours}:${minutes}`
+    }
   }
 
 }
