@@ -9,8 +9,7 @@
   
         <div class="section">
           <h3>About Us</h3>
-          <p>Explore our mission, vision, and values.</p>
-          <router-link to="/about">Learn More</router-link>
+          <router-link to="/about"><p>Explore our mission, vision, and values.</p></router-link>
         </div>
   
         <div class="section">
