@@ -12,8 +12,10 @@ export default {
 </script>
 
 <template>
-  <WebHeaderVue/>
-  <RouterView />
+  <div>
+    <WebHeaderVue />
+    <RouterView />
+  </div>
 </template>
 
 <style scoped>
