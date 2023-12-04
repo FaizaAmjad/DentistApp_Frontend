@@ -1,21 +1,20 @@
-<script setup>
-import { RouterView } from 'vue-router'
-</script>
-
 <script>
+import { RouterView } from 'vue-router'
 import WebHeaderVue from './components/WebHeader.vue'
+import WebFooter from './components/WebFooter.vue';
 export default {
   components: {
-    WebHeaderVue
+    WebHeaderVue,
+    WebFooter,
   }
 }
 </script>
 
 <template>
-  <div>
-    <WebHeaderVue />
-    <RouterView />
-  </div>
+  <WebHeaderVue/>
+  <RouterView />
+  <WebFooter/>
+
 </template>
 
 <style scoped>
@@ -78,6 +77,10 @@ nav a:first-of-type {
 
     padding: 1rem 0;
     margin-top: 1rem;
+  }
+  
+  footer{
+    align-content: center;
   }
 }
 </style>
