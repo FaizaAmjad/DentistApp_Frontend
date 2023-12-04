@@ -1,8 +1,16 @@
-<script setup>
+<template>
+  <div>
+    <Calendar />
+  </div>
+</template>
+
+<script>
+import Calendar from '../components/EventCalendar.vue'
+export default {
+  components: {
+    Calendar
+  }
+}
 </script>
 
-<template>
-  <main>
-    <h1>Welcome to dentist App</h1>
-  </main>
-</template>
+<style></style>
