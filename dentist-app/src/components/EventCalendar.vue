@@ -1,9 +1,12 @@
 <template>
   <div>
-    <!--:key" is here to force the calendar to update to show changes without page reload since no connection to backend-->
+    <div>
+      <!--:key" is here to force the calendar to update to show changes without page reload since no connection to backend-->
     <Qalendar :key="calendarKey" :events="events" :config="config" @event-was-dragged="updateEditedEvent"
       @event-was-resized="updateEditedEvent" @delete-event="deleteEvent" @edit-event="storeEvent" />
 
+    </div>
+    
     <b-modal v-model="showModal" id="modal-1" title="Edit event" @ok="editEvent" @hide="resetModal">
       <p>Change the setting you wish to alter</p>
       <b-row>
@@ -130,7 +133,9 @@ export default {
         dayBoundaries: {
           start: 8,
           end: 18,
-        }
+        },
+        // remove to enable month view
+        disableModes: ["month"],
       },
       events: [],
       showModal: false,
