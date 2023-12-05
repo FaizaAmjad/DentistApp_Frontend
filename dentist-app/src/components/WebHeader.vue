@@ -27,7 +27,7 @@ export default {
   position: sticky;
     top: 0;
     z-index: 1000;
-    background: #0a57ca;
+    background: #214471;
 }
 
 .navtab{

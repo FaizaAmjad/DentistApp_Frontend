@@ -94,7 +94,7 @@ h1 {
   padding: 0;
   font-weight: 900;
   font-family: Georgia, 'Times New Roman', Times, serif;
-  color: rgb(13, 29, 148);
+  color:rgb(14, 14, 83);
 }  
 
 h2{
@@ -102,7 +102,7 @@ h2{
  margin-bottom: 40px;
 }
 .background{
-  background-color: rgba(73, 181, 235, 0.903);
+  background-color: rgba(74, 100, 161, 0.903);
   padding: 3%;
   min-height: 100vh;
   box-sizing: border-box;
@@ -135,7 +135,7 @@ h2{
 }
 
 .hyperlink{
-  color: rgb(76, 13, 148);
+  color: rgb(51, 12, 226);
 }
 
 @media (max-width: 768px) {

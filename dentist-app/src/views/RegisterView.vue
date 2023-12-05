@@ -1,71 +1,40 @@
 <template>
-  <div>
-    <div class="register-text">
-      <p style="font-size: x-large">Register</p>
-      <p style="font-size: larger">Enter your details below to get started.</p>
-    </div>
-    <div class="register">
-      <b-col  lg="8">
-        <b-row class="justify-content-center">
-          <b-form-group id="input-group-1"
-          label-cols-sm="4"
-          label-cols-lg="3"
-          content-cols-sm
-          content-cols-lg="7"
-          label="Name"
-          label-for="dentist-name">
-            <b-form-input id="dentist-name" v-model="name" type="text" placeholder="Jane Doe" trim required></b-form-input>
-        </b-form-group>
-  
-        <b-form-group id="input-group-1"
-          label-cols-sm="4"
-          label-cols-lg="3"
-          content-cols-sm
-          content-cols-lg="7"
-          label="Email Address"
-          label-for="dentist-email">
-            <b-form-input id="dentist-email" v-model="emailAddress" type="email" placeholder="Jane.doe@gmail.com" trim required></b-form-input>
-        </b-form-group>
-  
-        <b-form-group id="input-group-1"
-          label-cols-sm="4"
-          label-cols-lg="3"
-          content-cols-sm
-          content-cols-lg="7"
-          label="Password"
-          label-for="password">
-            <b-form-input id="password" v-model="password" type="password" trim required></b-form-input>
-        </b-form-group>
-  
-        <b-form-group id="input-group-1"
-          label-cols-sm="4"
-          label-cols-lg="3"
-          content-cols-sm
-          content-cols-lg="7"
-          label="Confirm Password"
-          label-for="repeatedPassword">
-            <b-form-input id="repeatedPassword" v-model="repeatedPassword" type="password" trim required></b-form-input>
-        </b-form-group>  
+  <div class="background">
+    <div class="container">
 
-        <b-form-group id="input-group-1"
-          label-cols-sm="4"
-          label-cols-lg="3"
-          content-cols-sm
-          content-cols-lg="7"
-          label="Clinic"
-          label-for="clinicDropdown">
+      <div class="registration-box">
+
+        <h1>Register</h1>
+        <h2>Enter your details below to get started.</h2>
+
+        <b-form @submit="onRegister">
+          <b-form-group label="Name" label-for="dentist-name" label-cols-md="2">
+            <b-form-input id="dentist-name" v-model="name" type="text" placeholder="Jane Doe" trim required></b-form-input>
+          </b-form-group>
+
+          <b-form-group label="Email Address" label-for="dentist-email" label-cols-md="2">
+            <b-form-input id="dentist-email" v-model="emailAddress" type="email" placeholder="Jane.doe@gmail.com" trim required></b-form-input>
+          </b-form-group>
+
+          <b-form-group label="Password" label-for="password" label-cols-md="2">
+            <b-form-input id="password" v-model="password" type="password" trim required></b-form-input>
+          </b-form-group>
+
+          <b-form-group label="Confirm Password" label-for="repeatedPassword" label-cols-md="2">
+            <b-form-input id="repeatedPassword" v-model="repeatedPassword" type="password" trim required></b-form-input>
+          </b-form-group>
+
+          <b-form-group label="Clinic" label-for="clinicDropdown" label-cols-md="2">
             <b-dropdown id="clinicDropdown" text="Select clinic" block variant="primary" lazy>
-              <b-dropdown-item-button v-for="clinic in this.clinics" :key="clinic.id" @click="this.clinic = clinic">{{clinic.name}}</b-dropdown-item-button>
-              <!--currently lacking get clinics function because of lack of connection to database-->
+              <b-dropdown-item-button v-for="clinic in clinics" :key="clinic.id" @click="clinic = clinic">{{ clinic.name }}</b-dropdown-item-button>
             </b-dropdown>
-        </b-form-group> 
-        </b-row> 
-      </b-col>
-      <b-row class="justify-content-center mt-3">
-          <b-col>
-            <b-button :disabled="notValidInput" type="submit" variant="primary" @click="onRegister">Register</b-button>
-          </b-col>
-        </b-row>
+          </b-form-group>
+
+          <b-button :disabled="notValidInput" type="submit" variant="primary">Register</b-button>
+        </b-form>
+
+      </div>
+
     </div>
   </div>
 </template>
@@ -174,36 +143,52 @@ export default {
 
 
 <style>
-.register {
-  display: flex;
-  flex-direction: column;
+
+h1 {
+  margin: 0;
+  padding: 0;
+  font-weight: 900;
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  color:rgb(14, 14, 83);
+}  
+
+h2{
+ font-size: large;
+ margin-bottom: 40px;
+}
+.background{
+  background-color: rgba(74, 100, 161, 0.903);
+  padding: 3%;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+.container {
+  
   justify-content: center;
   align-items: center;
-  padding-top: 3%
-}
-
-.register-text {
   text-align: center;
-  padding-top: 2%
+  height: 70vh;
+  border-radius:10%;
+  border-color: black;
+}
+.registration-box {
+  background-color: white;
+  text-align: center;
+  margin: center;
+  font-style: initial;
+  font-weight: 600;
+  padding-block: 0;
+  padding: 20%;
+  border-width: 10px;
+  border-style: initial;
+  border-radius: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-.form-container {
-  display: flex;
-  flex-direction: column;
+@media (max-width: 768px) {
+  .registration-box {
+    padding: 5%;
+  }
 }
 
-.form-row {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 10px;
-}
-
-.format {
-  display: flex;
-  flex-direction: column;
-  align-items: center; 
-  justify-content: center; 
-  min-height: 100vh; 
-  background-color: #989898;
-}
 </style>
