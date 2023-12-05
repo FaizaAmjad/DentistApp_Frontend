@@ -33,11 +33,12 @@ export default {
 .navtab{
   display: flex;
   align-items: center;
+  color: azure;
 }
 
 .logo{
   height: 100%;
-  width: 100%
+  width: 200%
 }
 
 </style>
