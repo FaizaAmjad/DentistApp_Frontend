@@ -45,14 +45,15 @@
 
 <style scoped>
 .background{
-  background-color: rgb(220, 212, 244);
+  background-color: rgba(74, 100, 161, 0.903);
   padding: 3%;
   min-height: 100vh;
   box-sizing: border-box;
 
 }
 .container{
-  background-color: rgb(191, 178, 226);
+  background-color: rgba(211, 215, 223, 0.903);
+  height: fit-content;
   border-radius: 20px;
 }
 .about {
@@ -61,12 +62,12 @@
   }
 
   h1 {
-    color: rgb(53, 0, 89); 
+    color: rgb(28, 28, 76); 
   }
 
   h3 {
     font-size: 18px;
-    color: rgb(45, 5, 85);
+    color: rgb(28, 28, 76); 
     margin: 20px 0;
     margin-bottom: 40px;
   }
@@ -80,7 +81,7 @@
   }
   .options{
    font-size: small;
-   color: blueviolet;
+   color: blue;
   }
   .about-text{
     text-align: left;

@@ -20,7 +20,7 @@ export default {
 
 <style scoped>
 header {
-  line-height: 1.5;
+  line-height: 2;
   max-height: 100vh;
 }
 

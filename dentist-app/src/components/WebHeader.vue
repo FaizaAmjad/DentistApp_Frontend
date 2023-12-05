@@ -27,17 +27,18 @@ export default {
   position: sticky;
     top: 0;
     z-index: 1000;
-    background: #0a57ca;
+    background: #214471;
 }
 
 .navtab{
   display: flex;
   align-items: center;
+  color: azure;
 }
 
 .logo{
   height: 100%;
-  width: 100%
+  width: 200%
 }
 
 </style>

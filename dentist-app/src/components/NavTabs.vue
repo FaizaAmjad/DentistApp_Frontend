@@ -1,25 +1,60 @@
 <template>
-  <div>
-    <b-row>
-      <b-col>
-        <div class="wrapper">
-          <nav >
-            <RouterLink class="tab" to="/">Home</RouterLink>
-            <RouterLink class="tab" to="/register">Register</RouterLink>
-            <RouterLink class="tab" to="/login">LogIn</RouterLink>
+  <nav class="navtab">
 
-          </nav>
-        </div>
-      </b-col>
-    </b-row>
-  </div>
+    <div class="left-links">
+     <RouterLink class="tab" to="/">Home</RouterLink>
+    </div>
+
+    <div class="right-links">
+    <b-dropdown >
+      <template #button-content>
+        <span class="account-button">Account</span>
+      </template>
+      <b-dropdown-item to="/login">Log In</b-dropdown-item>
+      <b-dropdown-item to="/register">Register</b-dropdown-item>
+      <b-dropdown-divider></b-dropdown-divider>
+      <b-dropdown-item to="/account">Account</b-dropdown-item>
+    </b-dropdown>
+    </div>
+
+  </nav>
 </template>
 
+<script>
+import { RouterLink } from 'vue-router';
+
+export default {
+  name: 'NavTabs',
+  components: {
+    RouterLink,
+  },
+};
+</script>
+
 <style scoped>
-.wrapper {
-  gap: 5%;
-  font-size: 1.5rem;
-  margin-top: 0;
+.navtab {
+  display: flex;
+  align-items: center;
+  justify-content:space-between;
+  margin: 10px;
+}
+
+
+.left-links {
+  display: flex;
+  align-items: center;
+}
+
+.right-links {
+  display: flex;
+  align-items: center;
+  position: relative; /* Adjusted to relative positioning */
+}
+
+.account-dropdown {
+  position: absolute;
+  top: 0;
+  right: 0;
 }
 
 .tab {
