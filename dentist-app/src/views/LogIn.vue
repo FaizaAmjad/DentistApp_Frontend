@@ -13,10 +13,13 @@ export default {
       console.log('Email:', this.email);
       console.log('Password:', this.password);
       try {
-        const response = await axios.post('http://localhost:3000/api/v1/dentists/login', {})
-            localStorage.setItem('token', response.data.token);
-            this.$store.dispatch('dentist', response.data.dentist);
-            this.$router.push('/');
+          const response = await axios.post('http://localhost:3000/api/v1/dentists/login', {
+          email: this.email,
+          password: this.password
+        })
+          localStorage.setItem('token', response.data.token);
+          this.$store.dispatch('dentist', response.data.dentist);
+          this.$router.push('/');
         } catch (error) {
             this.error = 'Invalid email/password.'
         }

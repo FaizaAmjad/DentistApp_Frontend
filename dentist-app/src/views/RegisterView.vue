@@ -9,11 +9,11 @@
 
         <b-form @submit="onRegister">
           <b-form-group label="First Name" label-for="dentist-Fname" label-cols-md="2">
-            <b-form-input id="dentist-Fname" v-model="name" type="text" placeholder="Jane" trim required></b-form-input>
+            <b-form-input id="dentist-Fname" v-model="Fname" type="text" placeholder="Jane" trim required></b-form-input>
           </b-form-group>
 
           <b-form-group label="Last Name" label-for="dentist-Lname" label-cols-md="2">
-            <b-form-input id="dentist-Lname" v-model="name" type="text" placeholder="Doe" trim required></b-form-input>
+            <b-form-input id="dentist-Lname" v-model="Lname" type="text" placeholder="Doe" trim required></b-form-input>
           </b-form-group>
 
           <b-form-group label="Email Address" label-for="dentist-email" label-cols-md="2">
@@ -97,14 +97,18 @@ export default {
                 password: this.password,
                 clinic: this.clinic
           })
-          console.log(' submitted ' + this.form.email)
-          alert('Registered')
-          localStorage.setItem('token', response.data.token);
-          this.$store.dispatch('dentist', response.data.dentist);  
-       
-        } catch (error) {
-          alert('Registeration unsuccessful')
-        }
+      // Check the status code to determine if the registration was successful
+      if (response.status === 201) {
+        console.log('Registration successful');
+        alert('Registered');
+      } else {
+        console.error('Registration failed with status:', response.status);
+        alert('Registration unsuccessful');
+      }
+    } catch (error) {
+      console.error('An error occurred during registration:', error);
+      alert('Registration unsuccessful');
+    }
       }       
     }, 
   }
