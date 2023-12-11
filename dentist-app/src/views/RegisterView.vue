@@ -8,8 +8,12 @@
         <h2>Enter your details below to get started.</h2>
 
         <b-form @submit="onRegister">
-          <b-form-group label="Name" label-for="dentist-name" label-cols-md="2">
-            <b-form-input id="dentist-name" v-model="name" type="text" placeholder="Jane Doe" trim required></b-form-input>
+          <b-form-group label="First Name" label-for="dentist-Fname" label-cols-md="2">
+            <b-form-input id="dentist-Fname" v-model="Fname" type="text" placeholder="Jane" trim required></b-form-input>
+          </b-form-group>
+
+          <b-form-group label="Last Name" label-for="dentist-Lname" label-cols-md="2">
+            <b-form-input id="dentist-Lname" v-model="Lname" type="text" placeholder="Doe" trim required></b-form-input>
           </b-form-group>
 
           <b-form-group label="Email Address" label-for="dentist-email" label-cols-md="2">
@@ -40,6 +44,8 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
   mounted() {
     document.body.style.backgroundColor = '#989898'
@@ -47,13 +53,13 @@ export default {
   },
   data() {
     return {
-      name: '',
+      firstName: '',
+      lastName: '',
       emailAddress: '',
       password: '',
       repeatedPassword: '',
       clinic: null, // type may be incorrect.
       clinics: [],
-      mqttClient: null
     }
   },
   computed:{
@@ -62,69 +68,15 @@ export default {
     }
   },
   methods: {
-    connectMQTT(){
-      // accessing global varibles/libraries defined in main.js
-      const mqtt = this.$mqtt
-      const broker = this.$broker
-
-      // mkaing broker instance
-      this.mqttClient = mqtt.connect(broker)
-
-      //log on connection
-      this.mqttClient.on('connect', () => {
-        console.log('MQTT connected');
-      })
-
-      //log errors
-      this.mqttClient.on('error', (err) => {
-        console.error('MQTT connection error:', err);
-      })
-    },
-    disconnectMQTT() {
-      if (this.mqttClient) {
-        this.mqttClient.end()
-        console.log('Disconnected from broker')
-      }
-    },
-    onRegister() {
-      if(this.validPassword() && this.validateEmail()){
-        try {
-          const userData = {
-            name: this.name,
-            email: this.emailAddress,
-            password: this.password
-            // clinic: this.clinic
-          }
-          const jsonUserData = JSON.stringify(userData)
-
-          this.mqttClient.publish('user/register-dentist', jsonUserData, { qos: 1})
-          /*
-          this.name = ''
-          this.emailAddress = ''
-          this.password = ''
-          this.repeatedPassword = ''
-          */
-          alert('Registered')
-          this.disconnectMQTT()
-          // change to main page for dentist
-          // $this.router.push('abc')
-          window.location.reload()
-        } catch (error) {
-          alert('Register unsuccessful')
-        }
-        
-      }       
-      
-    }, validPassword(){
-    if (this.password == this.repeatedPassword){
+    validPassword(){
+     if (this.password == this.repeatedPassword){
       return true
-    } else {
+     } else {
       alert('Passwords need to match')
       this.password = ''
       this.repeatedPassword = ''
-      return false
-    }
-  },
+      return false}
+    },
     validateEmail(){
       const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
@@ -133,9 +85,32 @@ export default {
       } else {  
         alert('Invalid email')
         this.emailAddress = ''
-        return false
+        return false }
+    },
+    async onRegister() {
+      if(this.validPassword() && this.validateEmail()){
+        try {
+          const response = await axios.post('http://localhost:3000/api/v1/dentists', {
+                firstName: this.firstName,
+                lastName: this.lastName,
+                email: this.email,
+                password: this.password,
+                clinic: this.clinic
+          })
+      // Check the status code to determine if the registration was successful
+      if (response.status === 201) {
+        console.log('Registration successful');
+        alert('Registered');
+      } else {
+        console.error('Registration failed with status:', response.status);
+        alert('Registration unsuccessful');
       }
+    } catch (error) {
+      console.error('An error occurred during registration:', error);
+      alert('Registration unsuccessful');
     }
+      }       
+    }, 
   }
   // TODO: get all clinics function
 }

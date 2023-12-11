@@ -1,12 +1,17 @@
 <script>
-import { RouterView } from 'vue-router'
-import WebHeaderVue from './components/WebHeader.vue'
+import axios from 'axios';
+import WebHeaderVue from './components/WebHeader.vue';
 import WebFooter from './components/WebFooter.vue';
 export default {
   components: {
     WebHeaderVue,
     WebFooter,
-  }
+  },
+ async created() {
+        const response = await axios.get('dentist');
+        this.$store.dispatch('dentist', response.data);
+        }
+
 }
 </script>
 
