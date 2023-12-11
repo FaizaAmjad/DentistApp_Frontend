@@ -132,7 +132,7 @@ export default {
         isSilent: true,
         showCurrentTime: true,
         dayBoundaries: {
-          start: 8,
+          start: 7,
           end: 18,
         },
         // remove to enable month view
