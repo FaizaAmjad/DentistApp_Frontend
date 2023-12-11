@@ -2,11 +2,11 @@
   <div>
     <div>
       <!--:key" is here to force the calendar to update to show changes without page reload since no connection to backend-->
-    <Qalendar :key="calendarKey" :events="events" :config="config" @event-was-dragged="updateEditedEvent"
-      @event-was-resized="updateEditedEvent" @delete-event="deleteEvent" @edit-event="storeEvent" />
+      <Qalendar :key="calendarKey" :events="events" :config="config" @event-was-dragged="updateEditedEvent"
+        @event-was-resized="updateEditedEvent" @delete-event="deleteEvent" @edit-event="storeEvent" />
 
     </div>
-    
+
     <b-modal v-model="showModal" id="modal-1" title="Edit event" @ok="editEvent" @hide="resetModal">
       <p>Change the setting you wish to alter</p>
       <b-row>
@@ -64,6 +64,7 @@ export default {
   mounted() {
     document.body.style.backgroundColor = '#989898',
       this.populateEvents()
+    this.registerFreeSlots()
   },
   components: {
     Qalendar,
@@ -311,9 +312,100 @@ export default {
       const minutes = (`0${date.getMinutes()}`).slice(-2)
 
       return `${year}-${month}-${day} ${hours}:${minutes}`
-    }
-  }
+    },
+    createFreeSlot(date) {
+      console.log(`Creating free slot for date: ${date}`)
+      // TODO post to backend
+    },
+    registerFreeSlots() {
 
+      const workHours = 9
+      const daysAhead = 30
+      const startTime = 8
+      /*
+      1. order slots in array by date and time
+      2. Set i to a[0]
+      3. Register free slots till cur === i or cur 
+      4. If cur === i then i++ to next slot, else keep registering next slot. If cur > today's date + 30 days, stop.
+      */
+      // events should be slots
+      const events = [{
+        title: "Root Canal",
+        with: "Jane Doe",
+        time: { start: new Date('2023-12-28T12:00:00')},
+        colorScheme: "red",
+        isEditable: true,
+        id: "10f",
+        description: "Patient doesn't want their teeth"
+      },
+      {
+        title: "General checkup",
+        with: "Jack Sparrow",
+        time: { start: new Date('2023-12-29T12:00:00')},
+        colorScheme: "darkBlue",
+        isEditable: true,
+        id: "11f",
+        description: "Patient wants more teeth"
+      }]
+
+      events.sort((a, b) => {
+        const dateA = new Date(a.time.start)
+        const dateB = new Date(b.time.start)
+        return dateA - dateB;
+      })
+
+      var eventIndex = 0
+      const currentDate = new Date()
+
+      // finds the nearest coming event
+      for (eventIndex; eventIndex < events.length; eventIndex++) {
+        const eventStartTime = new Date(events[eventIndex].time.start)
+        if (eventStartTime > currentDate) {
+          break
+        }
+      }
+
+      currentDate.setHours(8, 0, 0, 0)
+      const endDate = new Date(currentDate.getTime() + daysAhead * 24 * 60 * 60 * 1000) // 30 days ahead
+
+      while (currentDate < endDate) {
+        console.log('while executes')
+        const dayOfWeek = currentDate.getDay()
+
+        if (dayOfWeek >= 1 && dayOfWeek <= 5) {
+          const currentHour = currentDate.getHours()
+
+          if (currentHour >= startTime && currentHour < startTime + workHours) {
+            let slotAvailable = true
+            let eventFound = false
+
+            // Loop through events for each hour slot
+            for (let i = eventIndex; i < events.length; i++) {
+              const event = events[i]
+              const eventStart = event.time.start;
+              const eventEnd = new Date(eventStart.getTime() + 60 * 60 * 1000)
+
+              if (currentDate >= eventStart && currentDate < eventEnd) {
+                slotAvailable = false
+                eventIndex = i + 1// Move to the next event
+                eventFound = true
+                console.log('slot unavailable')
+                break; // No longer need to check through the rest of the events bc one has already been found
+              }
+            }
+
+            if (!eventFound && slotAvailable) {
+              console.log('free slot')
+              this.createFreeSlot(new Date(currentDate))
+            }
+          }
+        }
+
+        currentDate.setTime(currentDate.getTime() + 60 * 60 * 1000)
+      }
+    }
+
+  }
 }
 </script>
 <style>
