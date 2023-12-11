@@ -1,6 +1,76 @@
 <template>
   <nav class="navtab">
 
+<div class="left-links">
+ <RouterLink class="tab" to="/">Home</RouterLink>
+</div>
+
+<div class="right-links">
+  
+    <b-dropdown v-if="!dentist">
+      <template #button-content>
+        <span class="account-button">Account</span>
+      </template>
+      <b-dropdown-item to="/login">Log In</b-dropdown-item>
+     
+      
+      
+    </b-dropdown>
+    
+    <b-dropdown v-if="dentist">
+      <template #button-content>
+        <span class="account-button">Account</span>
+      </template>
+      <b-dropdown-item v-if="dentist.admin" to="/register">Add Dentist</b-dropdown-item>
+      <b-dropdown-item to="/account">Account</b-dropdown-item>
+      <b-dropdown-item  @click="handleLogout">logout</b-dropdown-item>
+    </b-dropdown>
+
+      </div>
+  </nav>
+</template>
+
+<script>
+import { mapGetters, useStore } from 'vuex'
+import { useRouter, useRoute } from 'vue-router'
+import { onMounted } from 'vue'
+
+export default {
+  name: 'nav-bar',
+
+  setup() {
+    onMounted(() => {
+      const store = useStore()
+      const router = useRouter()
+      const route = useRoute()
+      
+      if (store.dentist && ['/', '/login', '/signup'].includes(route.path)) {
+        router.push('/home')
+      } else if (!store.dentist && !['/', '/login', '/signup'].includes(route.path)) {
+        router.push('/login')
+      }
+      
+    })
+    const store = useStore()
+    const router = useRouter()
+    const handleLogout = () => {
+      localStorage.removeItem('token')
+      store.dispatch('dentist', null)
+      router.push('/login')
+    }
+
+    return { handleLogout }
+  },
+  computed: {
+    ...mapGetters(['dentist'])
+  }
+}
+</script>
+
+
+<!-- <template>
+  <nav class="navtab">
+
     <div class="left-links">
      <RouterLink class="tab" to="/">Home</RouterLink>
     </div>
@@ -18,18 +88,50 @@
     </div>
 
   </nav>
-</template>
+</template> -->
 
-<script>
+<!-- <script>
 import { RouterLink } from 'vue-router';
+import { mapGetters, useStore } from 'vuex'
+import { useRouter, useRoute } from 'vue-router'
+import { onMounted } from 'vue'
 
 export default {
   name: 'NavTabs',
+
+  
+  setup() {
+    onMounted(() => {
+      const store = useStore()
+      const router = useRouter()
+      const route = useRoute()
+      
+      if (store.user && ['/', '/login', '/signup'].includes(route.path)) {
+        router.push('/home')
+      } else if (!store.user && !['/', '/login', '/signup'].includes(route.path)) {
+        router.push('/login')
+      }
+      
+    })
+    const store = useStore()
+    const router = useRouter()
+    const handleLogout = () => {
+      localStorage.removeItem('token')
+      store.dispatch('dentist', null)
+      router.push('/login')
+    }
+
+    return { handleLogout }
+  },
+  computed: {
+    ...mapGetters(['user'])
+  }
+,
   components: {
     RouterLink,
-  },
-};
-</script>
+  }
+}
+</script> -->
 
 <style scoped>
 .navtab {
