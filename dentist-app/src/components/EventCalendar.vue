@@ -145,7 +145,7 @@ export default {
         with: " ",
         time: { start: " ", end: " " },
         colorScheme: " ",
-        isEditable: true,
+        isEditable: false,
         id: " ",
         description: " "
       },
@@ -173,18 +173,18 @@ export default {
         {
           title: "Root Canal",
           with: "Jane Doe",
-          time: { start: "2023-11-28 12:05", end: "2023-11-28 13:35" },
+          time: { start: "2023-11-28 12:00", end: "2023-11-28 13:00" },
           colorScheme: "red",
-          isEditable: true,
+          isEditable: false,
           id: "10f",
           description: "Patient doesn't want their teeth"
         },
         {
           title: "General checkup",
           with: "Jack Sparrow",
-          time: { start: "2023-11-29 10:05", end: "2023-11-29 12:35" },
+          time: { start: "2023-11-29 10:00", end: "2023-11-29 11:00" },
           colorScheme: "darkBlue",
-          isEditable: true,
+          isEditable: false,
           id: "11f",
           description: "Patient wants more teeth"
         }
@@ -198,7 +198,7 @@ export default {
       with: appointment.patient.name,
       time: { start: appointment.startTime, end: appointment.endTime },
       color: "green", <-- possibly dependent on general type of appointment
-      isEditable: true,
+      isEditable: false,
       id: string of ObjectId of document in Schema?,
       description: appointment.issue
       }
@@ -295,7 +295,7 @@ export default {
         with: " ",
         time: { start: " ", end: " " },
         colorScheme: " ",
-        isEditable: true,
+        isEditable: false,
         id: " ",
         description: " "
       }
@@ -334,7 +334,7 @@ export default {
         with: "Jane Doe",
         time: { start: new Date('2023-12-28T12:00:00')},
         colorScheme: "red",
-        isEditable: true,
+        isEditable: false,
         id: "10f",
         description: "Patient doesn't want their teeth"
       },
@@ -343,7 +343,7 @@ export default {
         with: "Jack Sparrow",
         time: { start: new Date('2023-12-29T12:00:00')},
         colorScheme: "darkBlue",
-        isEditable: true,
+        isEditable: false,
         id: "11f",
         description: "Patient wants more teeth"
       }]
