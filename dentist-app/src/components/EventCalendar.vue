@@ -145,7 +145,7 @@ export default {
         with: " ",
         time: { start: " ", end: " " },
         colorScheme: " ",
-        isEditable: false,
+        isEditable: true,
         id: " ",
         description: " "
       },
@@ -175,7 +175,7 @@ export default {
           with: "Jane Doe",
           time: { start: "2023-11-28 12:00", end: "2023-11-28 13:00" },
           colorScheme: "red",
-          isEditable: false,
+          isEditable: true,
           id: "10f",
           description: "Patient doesn't want their teeth"
         },
@@ -184,7 +184,7 @@ export default {
           with: "Jack Sparrow",
           time: { start: "2023-11-29 10:00", end: "2023-11-29 11:00" },
           colorScheme: "darkBlue",
-          isEditable: false,
+          isEditable: true,
           id: "11f",
           description: "Patient wants more teeth"
         }
@@ -255,6 +255,8 @@ export default {
       this.newEvent.time.start = formattedStartTime
       this.newEvent.time.end = formattedEndTime
       /*
+
+      // ADD ROUNDING SO SLOTS STAY WITHIN HOUR BOUNDARIES AND HAVE DURATION OF 1 HOUR
       // saving to DB
       // send notification to patient
       */
