@@ -1,91 +1,135 @@
 <template>
-  <div class="row">
-    <div class="col-md-6 offset-md-3">
-      <div class="auth-wrapper">
-        <div class="auth-inner">
-          <div>
-            <Error v-if="error" :error="error"></Error>
-            <h3>Add a Clinic</h3>
-            <p>Welcome to Clinic registration page!</p>
-            <hr />
-          </div>
-         
-          <form @submit.prevent="onSignUp()">
-            <div class="form-group">
-              <label>¨Clinic Name</label>
-              <input
-                type="text"
-                class="form-control"
-                prepend-icon="ni ni-hat-3"
-                placeholder="Tooth Centre"
-                v-model.trim="form.clinicName"
-                required
-              />
-            </div>
+  <div class="background">
+    <div class="container">
 
-            <div class="form-group">
-              <label>Address</label>
-              <input
-                type="Address"
-                class="form-control"
-                placeholder="Lindholmen 88, 41755"
-                v-model.trim="form.address"
-                required
-              />
-            </div>
-             
-          
-            <div class="my-3">
-              <button type="submit" class="btn btn-primary">Register</button>
-            </div>
-          </form>
-        </div>
+      <div class="registration-box">
+
+        <h1>Register Clinic</h1>
+        <h2>Enter your clinic details below to register it.</h2>
+
+        <b-form @submit="onRegister">
+          <b-form-group label="Clinic Name" label-for="clinicName" label-cols-md="2">
+            <b-form-input id="clinicName" v-model="Fname" type="text" placeholder="Tooth Centre" trim required></b-form-input>
+          </b-form-group>
+
+          <b-form-group label="Address" label-for="clinicAddress" label-cols-md="2">
+            <b-form-input id="clinicAddress" v-model="Address" type="address" placeholder="Lindholmen 88, 41756, Gothenburg" trim required></b-form-input>
+          </b-form-group>
+
+          <b-button :disabled="notValidInput" type="submit" variant="primary">Register</b-button>
+        </b-form>
+
       </div>
+
     </div>
   </div>
 </template>
 
 <script>
+import axios from 'axios';
 
-import Error from '../components/Error.vue'
-import { createClinics } from '../apis/booking'
 export default {
-  name: 'registerClinic',
-  components: {
-    Error
+  mounted() {
+    document.body.style.backgroundColor = '#989898'
+    this.connectMQTT()
   },
   data() {
     return {
-      form: {
-        clinicName: '',
-        address: ''        
-      },
-      error: ''
+      clinicName: '',
+      clinicAddress: '',
+    }
+  },
+  computed:{
+    notValidInput(){
+      return !(this.clinicName && this.clinicAddress)
     }
   },
   methods: {
-    async onRegister() {
-      try {
-        //   console.log(' submitted ' + this.form.email)
-        // TODO create a field for the theme on the signup form
-          const clinic = await createClinic(
-          this.form.clinicName,
-          this.form.address
-        )
-
     
-      
-      } catch (error) {
-        this.error = 'En error occurred.'
-      }
+    validateAddress(){
+      if (this.clinicAddress.trim() === '') {
+    // Empty address
+     alert('Please enter a proper address.');
+     return false;
+     } else {
+     // Valid address
+     return true;
+     }
     },
+    async onRegister() {
+      if(this.validAddress() ){
+        try {
+          const response = await axios.post('http://localhost:3000/api/v1/clinics', {
+                clinicName: this.clinicName,
+                clinicAddress: this.clinicAddress,
+                
+          })
+      // Check the status code to determine if the registration was successful
+      if (response.status === 201) {
+        console.log('Registration successful');
+        alert('Registered');
+      } else {
+        console.error('Registration failed with status:', response.status);
+        alert('Registration unsuccessful');
+      }
+    } catch (error) {
+      console.error('An error occurred during registration:', error);
+      alert('Registration unsuccessful');
+    }
+      }       
+    }, 
   }
 }
 </script>
-<style scoped>
-button {
-  background-color: var(--button);
-  color: var(--button-letter);
-  border: none;
+
+
+<style>
+
+h1 {
+  margin: 0;
+  padding: 0;
+  font-weight: 900;
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  color:rgb(14, 14, 83);
+}  
+
+h2{
+ font-size: large;
+ margin-bottom: 40px;
 }
+.background{
+  background-color: rgba(74, 100, 161, 0.903);
+  padding: 3%;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+.container {
+  
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  height: 70vh;
+  border-radius:10%;
+  border-color: black;
+}
+.registration-box {
+  background-color: white;
+  text-align: center;
+  margin: center;
+  font-style: initial;
+  font-weight: 600;
+  padding-block: 0;
+  padding: 20%;
+  border-width: 10px;
+  border-style: initial;
+  border-radius: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 768px) {
+  .registration-box {
+    padding: 5%;
+  }
+}
+
 </style>
