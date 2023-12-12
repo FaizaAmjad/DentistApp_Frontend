@@ -1,29 +1,37 @@
 <script>
-import axios from 'axios';
+import { login, getDentistInfo } from '../apis/dentists'
+import Error from '../components/Error.vue'
 export default {
+  name: 'login-view',
+  components: {
+    Error
+  },
   data() {
     return {
-      email: '',
-      password: '',
-      loginError: false,
-    };
+      form: {
+        email: '',
+        password: ''
+      },
+      error: ''
+    }
   },
+ 
   methods: {
-    async handleSubmit() {
-      console.log('Email:', this.email);
-      console.log('Password:', this.password);
+    async onLogin() {
       try {
-          const response = await axios.post('http://localhost:3000/api/v1/dentists/login', {
-          email: this.email,
-          password: this.password
-        })
-          localStorage.setItem('token', response.data.token);
-          this.$store.dispatch('dentist', response.data.dentist);
-          this.$router.push('/');
-        } catch (error) {
-            this.error = 'Invalid email/password.'
-        }
-    },
+        console.log('Logged in' + this.form.email)
+
+        const token = await login(undefined, this.form.email, this.form.password)
+        localStorage.setItem('token', token)
+
+        const dentistDetails = await getDentistInfo()
+        this.$store.dispatch('dentist', dentistDetails)
+
+        this.$router.push('/')
+      } catch (error) {
+        this.error = 'Invalid email/password.'
+      }
+    }
   }
 }
 </script>
@@ -40,22 +48,22 @@ export default {
       <h1>Log In</h1>
       <h2>Log in to get started with your work!</h2> 
   
-      <b-form @submit="handleSubmit">
-          <b-form-group label="Email" label-for="email" label-cols-md="2">
-            <b-form-input id="email" v-model="email" type="email" required></b-form-input>
+      <b-form @submit="onLogin">
+          <b-form-group label="Email" label-for="email" label-cols-md="1">
+            <b-form-input id="email" v-model="form.email" type="email" required></b-form-input>
           </b-form-group>
 
           <b-form-group label="Password" label-for="password" label-cols-md="2">
-            <b-form-input id="password" v-model="password" type="password" required></b-form-input>
+            <b-form-input id="password" v-model="form.password" type="password" required></b-form-input>
           </b-form-group>
 
           <b-button type="submit" variant="primary">LOGIN</b-button>
       </b-form>
 
 
-     <div class="create-account-prompt">
+     <!-- <div class="create-account-prompt">
       <p>Don't have an account?   <router-link to="/register" div class="hyperlink"> Create an account.</router-link> </p>
-     </div>
+     </div> -->
 
     
     </div>

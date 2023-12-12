@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import NavTabs from '/src/components/NavTabs.vue'
+import NavTabs from './NavTabs.vue'
 export default {
   components: {
     NavTabs

@@ -8,10 +8,14 @@
 
 <script>
 import Calendar from '../components/EventCalendar.vue'
+import {  useStore } from 'vuex'
+import { useRouter, useRoute } from 'vue-router'
+import { onMounted } from 'vue'
 export default {
   components: {
     Calendar
-  }
+  },
+ 
 }
 </script>
 

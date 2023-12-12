@@ -3,12 +3,21 @@ import HomeView from '../views/HomeView.vue'
 import AboutView from '../views/AboutView.vue'
 import LogIn from '../views/LogIn.vue'
 import AccountView from '../views/AccountView.vue'
+import RegisterClinic from '../views/RegisterClinic.vue'
+
 
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
+    
     {
+      path: '/login',
+      name: 'login',
+      component: LogIn
+    },
+    {
+      
       path: '/',
       name: 'home',
       component: HomeView
@@ -27,10 +36,16 @@ const router = createRouter({
       component: AccountView
     },
     {
-      path: '/login',
-      name: 'login',
-      component: LogIn
+      path: '/registerClinic',
+      name: 'registerClinic',
+      component: RegisterClinic
+    },  
+    {
+      path: '/signup',
+      name: 'signup',
+      component: () => import('../views/SignupView.vue')
     },
+    
     {
       path: '/register',
       name: 'register',
@@ -39,6 +54,7 @@ const router = createRouter({
       // which is lazy-loaded when the route is visited.
       component: () => import('../views/RegisterView.vue')
     },
+  
   ]
 })
 
