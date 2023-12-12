@@ -405,8 +405,16 @@ export default {
 
         currentDate.setTime(currentDate.getTime() + 60 * 60 * 1000)
       }
-    }
-
+    },
+      getSlot(){
+        //
+      },
+      postSlots(slots){
+        // post
+      },
+      patchSlot(slot){
+        
+      }
   }
 }
 </script>
