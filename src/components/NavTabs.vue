@@ -1,9 +1,9 @@
 <template>
   <nav class="navtab">
 
-<div class="left-links">
+<!-- <div class="left-links">
  <RouterLink class="tab" to="/">Home</RouterLink>
-</div>
+</div> -->
 
 <div class="right-links">
   
@@ -11,9 +11,8 @@
       <template #button-content>
         <span class="account-button">Account</span>
       </template>
-      <b-dropdown-item to="/login">Log In</b-dropdown-item>
-     
-      
+      <b-dropdown-item to="/login">LogIn</b-dropdown-item>
+    
       
     </b-dropdown>
     
@@ -22,7 +21,9 @@
         <span class="account-button">Account</span>
       </template>
       <b-dropdown-item v-if="dentist.admin" to="/register">Add Dentist</b-dropdown-item>
+      <b-dropdown-item v-if="dentist.admin" to="/signup">Create Dentist</b-dropdown-item>
       <b-dropdown-item to="/account">Account</b-dropdown-item>
+      <b-dropdown-item to="/">Home</b-dropdown-item>
       <b-dropdown-item  @click="handleLogout">logout</b-dropdown-item>
     </b-dropdown>
 
@@ -44,9 +45,9 @@ export default {
       const router = useRouter()
       const route = useRoute()
       
-      if (store.dentist && ['/', '/login', '/signup'].includes(route.path)) {
+      if (store.dentist && [ '/login'].includes(route.path)) {
         router.push('/home')
-      } else if (!store.dentist && !['/', '/login', '/signup'].includes(route.path)) {
+      } else if (!store.dentist && ![ '/login'].includes(route.path)) {
         router.push('/login')
       }
       

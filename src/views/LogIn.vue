@@ -1,6 +1,11 @@
 <script>
 import { login, getDentistInfo } from '../apis/dentists'
+import Error from '../components/Error.vue'
 export default {
+  name: 'login-view',
+  components: {
+    Error
+  },
   data() {
     return {
       form: {
@@ -10,6 +15,7 @@ export default {
       error: ''
     }
   },
+ 
   methods: {
     async onLogin() {
       try {
@@ -38,7 +44,7 @@ export default {
   <div class="container">
 
     <div class="login-box">
-  {{ JSON.stringify(form) }}
+  
       <h1>Log In</h1>
       <h2>Log in to get started with your work!</h2> 
   
@@ -55,9 +61,9 @@ export default {
       </b-form>
 
 
-     <div class="create-account-prompt">
+     <!-- <div class="create-account-prompt">
       <p>Don't have an account?   <router-link to="/register" div class="hyperlink"> Create an account.</router-link> </p>
-     </div>
+     </div> -->
 
     
     </div>

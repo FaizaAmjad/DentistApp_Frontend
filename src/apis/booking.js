@@ -1,6 +1,12 @@
 import { Api } from './api'
 
 
+
+export const getClinics = async () => {
+  const response = await Api().get('clinics')
+
+  return response.data
+}
 export const book=async(slot_id)=>{
     
     const response = await Api().post(`slots/${slot_id}/book`, {
