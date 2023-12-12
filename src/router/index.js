@@ -3,6 +3,8 @@ import HomeView from '../views/HomeView.vue'
 import AboutView from '../views/AboutView.vue'
 import LogIn from '../views/LogIn.vue'
 import AccountView from '../views/AccountView.vue'
+import RegisterClinic from '../views/RegisterClinic.vue'
+
 
 
 const router = createRouter({
@@ -32,7 +34,13 @@ const router = createRouter({
       path: '/account',
       name: 'account',
       component: AccountView
-    },{
+    },
+    {
+      path: '/registerClinic',
+      name: 'registerClinic',
+      component: RegisterClinic
+    },  
+    {
       path: '/signup',
       name: 'signup',
       component: () => import('../views/SignupView.vue')
@@ -46,6 +54,7 @@ const router = createRouter({
       // which is lazy-loaded when the route is visited.
       component: () => import('../views/RegisterView.vue')
     },
+  
   ]
 })
 
