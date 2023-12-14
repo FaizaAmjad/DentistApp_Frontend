@@ -20,7 +20,7 @@
       <template #button-content>
         <span class="account-button">Account</span>
       </template>
-      <b-dropdown-item v-if="dentist.admin" to="/register">Add Dentist</b-dropdown-item>
+      <b-dropdown-item v-if="!dentist.admin" to="/create-slots">Slots Management</b-dropdown-item>
       <b-dropdown-item v-if="dentist.admin" to="/signup">Create Dentist</b-dropdown-item>
       <b-dropdown-item to="/account">Account</b-dropdown-item>
       <b-dropdown-item to="/">Home</b-dropdown-item>

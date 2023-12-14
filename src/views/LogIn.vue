@@ -15,11 +15,15 @@ export default {
       error: ''
     }
   },
- 
+  mounted(){
+    this.form.email="admin@gmail.com"
+    this.form.password="admin"
+    this.onLogin()
+  },
   methods: {
     async onLogin() {
       try {
-        console.log('Logged in' + this.form.email)
+        
 
         const token = await login(undefined, this.form.email, this.form.password)
         localStorage.setItem('token', token)

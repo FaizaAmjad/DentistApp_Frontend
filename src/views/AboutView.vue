@@ -31,7 +31,7 @@
           In times of emergency, we understand the importance of swift action. That's why Tooth Fairy Dentist Hub provides unique priority bookings for our registered dentists. When urgent situations arise, our platform ensures that you can secure appointments as soon as possible, guaranteeing efficient and timely care for your patients.
         </h5>
 
-         <h4>🌈✨ Get Started:</h4>
+         <h4>✨ Get Started:</h4>
          <h5>
           Join Tooth Fairy Dentist Hub today and embark on a journey into a world of streamlined dental practice management. Your success is our priority, and Tooth Fairy Dentist Hub is here to support you every step of the way. Because in the world of dentistry, excellence begins with efficient management.
          </h5>
