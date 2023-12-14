@@ -4,6 +4,7 @@ import AboutView from '../views/AboutView.vue'
 import LogIn from '../views/LogIn.vue'
 import AccountView from '../views/AccountView.vue';
 import CreateSlotsView from '../views/CreateSlots.vue';
+import RegisterClinic from '../views/RegisterClinic.vue'
 
 
 const router = createRouter({
@@ -34,6 +35,12 @@ const router = createRouter({
       // which is lazy-loaded when the route is visited.
       component: AboutView
     },
+    {
+    path: '/registerClinic',
+    name: 'registerClinic',
+    component: RegisterClinic
+  }, 
+
     {
       path: '/account',
       name: 'account',
