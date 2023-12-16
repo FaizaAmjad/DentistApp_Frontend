@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <div class="background">
     <div class="container">
 
@@ -34,11 +34,11 @@
             <b-form-input id="repeatedPassword" v-model="repeatedPassword" type="password" trim required></b-form-input>
           </b-form-group>
 
-         <!--  <b-form-group label="Clinic" label-for="clinicDropdown" label-cols-md="2">
+          <b-form-group label="Clinic" label-for="clinicDropdown" label-cols-md="2">
             <b-dropdown id="clinicDropdown" text="Select clinic" block variant="primary" lazy>
               <b-dropdown-item-button v-for="clinic in clinics" :key="allClinics" @click="clinic = clinic">{{ clinic.name }}</b-dropdown-item-button>
             </b-dropdown>
-          </b-form-group>  -->
+          </b-form-group>  
 
           <b-button  type="submit" class="btn btn-primary">Register</b-button>
         </b-form> 
@@ -48,8 +48,8 @@
     </div>
   </div>
 </template>
-
-<script>
+ -->
+<!-- <script>
 import Error from '../components/Error.vue'
 import { createDentist } from '../apis/dentists'
 import { getClinics } from '../apis/booking'
@@ -127,6 +127,5 @@ export default {
   
 }
 </script>
+ -->
 
-
-</style>

@@ -22,6 +22,7 @@
       </template>
       <b-dropdown-item v-if="!dentist.admin" to="/create-slots">Slots Management</b-dropdown-item>
       <b-dropdown-item v-if="dentist.admin" to="/signup">Create Dentist</b-dropdown-item>
+      <b-dropdown-item v-if="dentist.admin" to="/registerClinic">Create Clinic</b-dropdown-item>
       <b-dropdown-item to="/account">Account</b-dropdown-item>
       <b-dropdown-item to="/">Home</b-dropdown-item>
       <b-dropdown-item  @click="handleLogout">logout</b-dropdown-item>
@@ -35,7 +36,7 @@
 import { mapGetters, useStore } from 'vuex'
 import { useRouter, useRoute } from 'vue-router'
 import { onMounted } from 'vue'
-
+import Error from '../components/Error.vue'
 export default {
   name: 'nav-bar',
 

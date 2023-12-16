@@ -3,7 +3,6 @@ import HomeView from '../views/HomeView.vue'
 import AboutView from '../views/AboutView.vue'
 import LogIn from '../views/LogIn.vue'
 import AccountView from '../views/AccountView.vue';
-import CreateSlotsView from '../views/CreateSlots.vue';
 import RegisterClinic from '../views/RegisterClinic.vue'
 
 

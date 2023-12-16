@@ -11,10 +11,15 @@ import Calendar from '../components/EventCalendar.vue'
 import {  useStore } from 'vuex'
 import { useRouter, useRoute } from 'vue-router'
 import { onMounted } from 'vue'
+import { getSlots } from '../apis/booking'
+import { getDentistInfo } from '../apis/dentists'
 export default {
   components: {
     Calendar
   },
+  async mounted(){
+   const allSlots=getSlots()
+  }
  
 }
 </script>

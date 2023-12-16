@@ -1,5 +1,6 @@
 <template>
   <div>
+    {{ JSON.stringify(events) }}
     <div>
       <!--:key" is here to force the calendar to update to show changes without page reload since no connection to backend-->
     <Qalendar :key="calendarKey" :events="events" :config="config" @event-was-dragged="updateEditedEvent"
@@ -60,10 +61,27 @@
 import { Qalendar } from "qalendar"
 import VueDatePicker from '@vuepic/vue-datepicker'
 import '@vuepic/vue-datepicker/dist/main.css'
+import { getSlots } from '../apis/booking'
 export default {
-  mounted() {
-    document.body.style.backgroundColor = '#989898',
-      this.populateEvents()
+  async  mounted() {
+    const allSlots= await getSlots()
+   
+    this.events=allSlots.map(event=>{
+     
+      return{  title: "hello world ",
+        with: " ",
+        time: { start: event.start, end: event.end },
+        colorScheme: "darkGreen",
+        isEditable: false,
+        id: event._id,
+        description: " iam fix ur teeth "}
+
+    })
+    
+     document.body.style.backgroundColor = '#989898',
+      this.populateEvents()  
+     
+   
   },
   components: {
     Qalendar,
@@ -81,7 +99,7 @@ export default {
         month: {
           showTrailingAndLeadingDates: false,
         },
-        locale: 'en-US',
+        locale: 'en-UK',
         style: {
           fontFamily: 'Arial',
           colorSchemes: {
@@ -131,13 +149,13 @@ export default {
         isSilent: true,
         showCurrentTime: true,
         dayBoundaries: {
-          start: 8,
-          end: 18,
+          start: 0,
+          end: 23,
         },
         // remove to enable month view
         disableModes: ["month"],
       },
-      events: [],
+      events: [{"title":"Root Canal","with":"Jane Doe","time":{"start":"2023-11-28 12:05","end":"2023-11-28 13:35"},"colorScheme":"red","isEditable":true,"id":"10f","description":"Patient doesn't want their teeth"},{"title":"General checkup","with":"Jack Sparrow","time":{"start":"2023-11-29 10:05","end":"2023-11-29 12:35"},"colorScheme":"darkBlue","isEditable":true,"id":"11f","description":"Patient wants more teeth"}],
       showModal: false,
       newEvent: {
         title: " ",

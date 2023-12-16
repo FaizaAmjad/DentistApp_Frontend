@@ -14,7 +14,7 @@
             <div class="form-group">
               <label>Start time</label>
               <input
-                type="date"
+                type="datetime-local"
                 class="form-control"
                 prepend-icon="ni ni-hat-3"
                 placeholder="Start date"
@@ -26,7 +26,7 @@
             <div class="form-group">
               <label>End time </label>
               <input
-                type="date"
+                type="datetime-local"
                 class="form-control"
                 placeholder="End Date"
                 v-model.trim="form.end"
@@ -75,7 +75,7 @@
 
 import Error from '../components/Error.vue'
 import { getDentistInfo } from '../apis/dentists'
-import { CreateSlots,getSlots } from '../apis/booking'
+import { createSlots } from '../apis/booking'
 export default {
   name: 'create-slots-view ',
   components: {
@@ -96,7 +96,7 @@ export default {
       },
       error: '',
       dentistDetails:null,
-      allSlots:[]
+      
     }
   },
   methods: {
@@ -104,7 +104,7 @@ export default {
       try {
         //   
         // TODO create a field for the theme on the signup form
-        const slot = await CreateSlots(
+        const slot = await createSlots(
           this.form.start,
           this.form.end,
           this.form.duration,
@@ -112,7 +112,7 @@ export default {
           this.dentistDetails.clinic_id
         )
 
-        this.allSlots = await getSlots()
+        this.$router.push('/')
       
       } catch (error) {
         this.error = 'En error occurred.'

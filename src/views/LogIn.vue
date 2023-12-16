@@ -16,8 +16,8 @@ export default {
     }
   },
   mounted(){
-    this.form.email="admin@gmail.com"
-    this.form.password="admin"
+    this.form.email="lolo@gmail.com"
+    this.form.password="12345"
     this.onLogin()
   },
   methods: {
@@ -65,9 +65,7 @@ export default {
       </b-form>
 
 
-     <!-- <div class="create-account-prompt">
-      <p>Don't have an account?   <router-link to="/register" div class="hyperlink"> Create an account.</router-link> </p>
-     </div> -->
+     
 
     
     </div>

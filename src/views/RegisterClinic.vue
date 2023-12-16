@@ -7,16 +7,16 @@
           <h1>Register Clinic</h1>
           <h2>Enter the clinic details below for registration.</h2>
   
-          <b-form @submit="onRegister">
+          <b-form @submit.prevent="onRegister()">
             <b-form-group label="Clinic Name" label-for="clinicName" label-cols-md="2">
-              <b-form-input id="clinicName" v-model="Fname" type="text" placeholder="Tooth Centre" trim required></b-form-input>
+              <b-form-input id="clinicName" v-model="form.clinicName" type="text" placeholder="Enter Clinic" trim required></b-form-input>
             </b-form-group>
   
-            <b-form-group label="Address" label-for="clinicAddress" label-cols-md="2">
-              <b-form-input id="clinicAddress" v-model="Address" type="address" placeholder="Lindholmen 88, 41756, Gothenburg" trim required></b-form-input>
+            <b-form-group label="Address" label-for="Address" label-cols-md="2">
+              <b-form-input id="address" v-model="form.address" type="address" placeholder="Enter address" trim required></b-form-input>
             </b-form-group>
   
-            <b-button :disabled="notValidInput" type="submit" variant="primary">Register</b-button>
+            <b-button  type="submit" variant="primary">Register</b-button>
           </b-form>
   
         </div>
@@ -26,7 +26,8 @@
   </template>
   
   <script>
-  
+  import Error from '../components/Error.vue'
+  import {createClinic}  from '../apis/booking'
   export default {
     mounted() {
       document.body.style.backgroundColor = '#989898'
@@ -34,19 +35,23 @@
     },
     data() {
       return {
+        form:{
         clinicName: '',
-        clinicAddress: '',
+        address: '',
+    },
+    error: ''
       }
+      
     },
     computed:{
       notValidInput(){
-        return !(this.clinicName && this.clinicAddress)
+        return !(this.clinicName && this.Address)
       }
     },
     methods: {
       
-      validateAddress(){
-        if (this.clinicAddress.trim() === '') {
+       validateAddress(){
+        if (this.Address.trim() === '') {
       // Empty address
        alert('Please enter a proper address.');
        return false;
@@ -54,31 +59,34 @@
        // Valid address
        return true;
        }
-      },
+      }, 
       async onRegister() {
-        if(this.validAddress() ){
+        
           try {
-            const response = await axios.post('http://localhost:3000/api/v1/clinics', {
-                  clinicName: this.clinicName,
-                  clinicAddress: this.clinicAddress,
+            const clinic = await createClinic(
+          this.form.clinicName,
+          this.form.address,
+          )
+            
                   
-            })
+            
         // Check the status code to determine if the registration was successful
-        if (response.status === 201) {
+         if (response.status === 201) {
           console.log('Registration successful');
           alert('Registered');
         } else {
           console.error('Registration failed with status:', response.status);
           alert('Registration unsuccessful');
-        }
+        } 
       } catch (error) {
+
         console.error('An error occurred during registration:', error);
         alert('Registration unsuccessful');
       }
         }       
       }, 
     }
-  }
+  
   </script>
   
   

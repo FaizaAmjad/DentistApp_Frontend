@@ -8,7 +8,17 @@ export const getClinics = async () => {
 }
 
 
-export const CreateSlots = async (start,end,duration,dentist_id,clinic_id) => {
+export const createClinic = async (clinicName,address) => {
+  const response = await Api().post('clinics',{
+     
+    clinicName : clinicName,
+    address :address,
+  
+  })
+  return response.data 
+}
+
+export const createSlots = async (start,end,duration,dentist_id,clinic_id) => {
   const response = await Api().post('slots/many',{
      
   start : start,
