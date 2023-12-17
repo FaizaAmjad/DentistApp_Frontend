@@ -18,9 +18,9 @@ export default {
 <template>
   <WebHeaderVue/>
   <RouterView />
-  <footer style="padding-top: 100px;">
+  <!-- <footer style="padding-top: 100px;">
    <WebFooter/>
-  </footer>
+  </footer> -->
 </template>
 
 <style scoped>

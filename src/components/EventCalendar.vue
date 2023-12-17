@@ -62,26 +62,11 @@ import { Qalendar } from "qalendar"
 import VueDatePicker from '@vuepic/vue-datepicker'
 import '@vuepic/vue-datepicker/dist/main.css'
 import { getSlots } from '../apis/booking'
+import {format} from 'date-fns'
 export default {
   async  mounted() {
-    const allSlots= await getSlots()
-   
-    this.events=allSlots.map(event=>{
-     
-      return{  title: "hello world ",
-        with: " ",
-        time: { start: event.start, end: event.end },
-        colorScheme: "darkGreen",
-        isEditable: false,
-        id: event._id,
-        description: " iam fix ur teeth "}
-
-    })
-    
      document.body.style.backgroundColor = '#989898',
       this.populateEvents()  
-     
-   
   },
   components: {
     Qalendar,
@@ -89,8 +74,8 @@ export default {
   },
   data() {
     return {
-      // Qalendar documentation: https://tomosterlund.github.io/qalendar/guide.html
-
+     
+      
       config: {
         week: {
           startsOn: 'monday',
@@ -155,7 +140,7 @@ export default {
         // remove to enable month view
         disableModes: ["month"],
       },
-      events: [{"title":"Root Canal","with":"Jane Doe","time":{"start":"2023-11-28 12:05","end":"2023-11-28 13:35"},"colorScheme":"red","isEditable":true,"id":"10f","description":"Patient doesn't want their teeth"},{"title":"General checkup","with":"Jack Sparrow","time":{"start":"2023-11-29 10:05","end":"2023-11-29 12:35"},"colorScheme":"darkBlue","isEditable":true,"id":"11f","description":"Patient wants more teeth"}],
+      events: [],
       showModal: false,
       newEvent: {
         title: " ",
@@ -184,54 +169,26 @@ export default {
 
       // TODO: send updated events back to DB
     },
-    populateEvents() {
+    async populateEvents() {
 
-      this.events = [
-        {
-          title: "Root Canal",
-          with: "Jane Doe",
-          time: { start: "2023-11-28 12:05", end: "2023-11-28 13:35" },
-          colorScheme: "red",
-          isEditable: true,
-          id: "10f",
-          description: "Patient doesn't want their teeth"
-        },
-        {
-          title: "General checkup",
-          with: "Jack Sparrow",
-          time: { start: "2023-11-29 10:05", end: "2023-11-29 12:35" },
-          colorScheme: "darkBlue",
-          isEditable: true,
-          id: "11f",
-          description: "Patient wants more teeth"
-        }
-      ]
-      /*
-      ^^^ replace with API call to populate events, possibly with for loop to populate events in the correct format
-      // send notification to patient
-
-      for (appointment in appointments) {
-      title: General type of appointment (Cleaning, root canal, etc.)so appointment.type,
-      with: appointment.patient.name,
-      time: { start: appointment.startTime, end: appointment.endTime },
-      color: "green", <-- possibly dependent on general type of appointment
-      isEditable: true,
-      id: string of ObjectId of document in Schema?,
-      description: appointment.issue
+      const allSlots= await getSlots()
+   
+   this.events=allSlots.map(event=>{
+     const startDate = new Date(event.start)
+     const endDate = new Date(event.end)
+     return {  
+      title: "hello world ",
+       with: " ",
+       time: { 
+        start: `${format(startDate, 'yyyy-MM-dd HH:mm')}`, 
+        end: `${format(endDate, 'yyyy-MM-dd HH:mm')}`, 
+      },
+       colorScheme: "darkGreen",
+       isEditable: false,
+       id: event._id,
+       description: " iam ur teeth "
       }
-
-      Assumed format 
-
-      appointment: {
-        type:
-        patient: {
-          name:
-        }
-        startTime:
-        endTime:
-        issue:
-      }
-      */
+   })
     },
     deleteEvent(eventId) {
       const index = this.events.findIndex(event => event.id === eventId)
