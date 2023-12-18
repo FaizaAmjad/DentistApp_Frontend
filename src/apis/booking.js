@@ -38,6 +38,11 @@ export const getSlots = async () => {
 }
 
 
+export const deleteSlot=async(slot_id)=>{
+    
+  const response = await Api().delete(`slots/${slot_id}`)
+  
+  return response.data}
 
 export const book=async(slot_id)=>{
     

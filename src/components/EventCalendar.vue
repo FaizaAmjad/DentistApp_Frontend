@@ -1,10 +1,120 @@
 <template>
   <div>
-    {{ JSON.stringify(events) }}
+    
     <div>
       <!--:key" is here to force the calendar to update to show changes without page reload since no connection to backend-->
     <Qalendar :key="calendarKey" :events="events" :config="config" @event-was-dragged="updateEditedEvent"
-      @event-was-resized="updateEditedEvent" @delete-event="deleteEvent" @edit-event="storeEvent" />
+      @event-was-resized="updateEditedEvent" @delete-event="deleteEvent" @edit-event="storeEvent" >
+      <template #eventDialog="props">
+       
+  <div
+    class="event-flyout"
+    :class="{ 'is-visible': isVisible, 'is-not-editable': !isEditable }"
+    :style="eventFlyoutInlineStyles"
+  >
+    <div
+      v-if="!config.eventDialog || !config.eventDialog.isCustom"
+      class="event-flyout__relative-wrapper"
+    >
+      <div class="event-flyout__menu">
+        <span
+          v-if="isEditable"
+          class="event-flyout__menu-editable"
+        >
+          <font-awesome-icon
+            class="event-flyout__menu-item is-edit-icon"
+            :icon="icons.edit"
+            @click="editEvent"
+          />
+
+          <font-awesome-icon
+            class="event-flyout__menu-item is-trash-icon"
+            :icon="icons.trash"
+            @click="deleteEvent"
+          />
+        </span>
+
+        <span class="event-flyout__menu-close">
+          <font-awesome-icon
+            class="event-flyout__menu-item is-times-icon"
+            :icon="icons.times"
+            @click="closeFlyout"
+          />
+        </span>
+      </div>
+
+      <div
+        v-if="calendarEvent"
+        class="event-flyout__info-wrapper"
+      >
+        <div
+          v-if="calendarEvent.title"
+          class="event-flyout__row is-title"
+        >
+          <div
+            class="event-flyout__color-icon"
+            :style="{ backgroundColor: eventBackgroundColor }"
+          />
+          {{ calendarEvent.title }}
+        </div>
+
+        <div
+          v-if="calendarEvent.time"
+          class="event-flyout__row is-time"
+        >
+          {{ getEventTime }}
+        </div>
+
+        <div
+          v-if="calendarEvent.location"
+          class="event-flyout__row is-location"
+        >
+          <font-awesome-icon :icon="icons.location" />
+          {{ calendarEvent.location }}
+        </div>
+
+        <div
+          v-if="calendarEvent.with"
+          class="event-flyout__row is-with"
+        >
+          <font-awesome-icon :icon="icons.user" />
+          {{ calendarEvent.with }}
+        </div>
+
+        <div
+          v-if="calendarEvent.topic"
+          class="event-flyout__row is-topic"
+        >
+          <font-awesome-icon
+            :icon="icons.topic"
+            class="calendar-week__event-icon"
+          />
+          {{ calendarEvent.topic }}
+        </div>
+
+        <div
+          v-if="calendarEvent.description"
+          class="event-flyout__row is-description"
+        >
+          <font-awesome-icon
+            :icon="icons.description"
+            class="calendar-week__event-icon"
+          />
+          <!-- eslint-disable vue/no-v-html -->
+          <p v-html="calendarEvent.description" />
+          <!--eslint-enable-->
+        </div>
+      </div>
+    </div>
+
+    <slot
+      v-else
+      :event-dialog-data="calendarEvent"
+      :close-event-dialog="closeFlyout"
+    />
+  </div>
+</template>
+  </Qalendar>
 
     </div>
     
@@ -61,7 +171,7 @@
 import { Qalendar } from "qalendar"
 import VueDatePicker from '@vuepic/vue-datepicker'
 import '@vuepic/vue-datepicker/dist/main.css'
-import { getSlots } from '../apis/booking'
+import { getSlots,deleteSlot } from '../apis/booking'
 import {format} from 'date-fns'
 export default {
   async  mounted() {
@@ -85,6 +195,7 @@ export default {
           showTrailingAndLeadingDates: false,
         },
         locale: 'en-UK',
+        eventDialog:{isCustom:false},
         style: {
           fontFamily: 'Arial',
           colorSchemes: {
@@ -184,13 +295,14 @@ export default {
         end: `${format(endDate, 'yyyy-MM-dd HH:mm')}`, 
       },
        colorScheme: "darkGreen",
-       isEditable: false,
+       isEditable: true,
        id: event._id,
        description: " iam ur teeth "
       }
    })
     },
-    deleteEvent(eventId) {
+    async deleteEvent(eventId) {
+      await deleteSlot(eventId);
       const index = this.events.findIndex(event => event.id === eventId)
       if (index !== -1) {
         this.events.splice(index, 1)
