@@ -44,10 +44,12 @@ export const deleteSlot=async(slot_id)=>{
   
   return response.data}
 
-export const book=async(slot_id)=>{
+export const book=async(slot_id,patient_id)=>{
     
     const response = await Api().post(`slots/${slot_id}/book`, {
-        booked:true
+        booked:true,
+        slot_id:slot_id,
+        patient_id:patient_id
       })
     
     return response.data}

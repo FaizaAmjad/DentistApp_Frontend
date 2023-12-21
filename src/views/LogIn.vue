@@ -16,8 +16,8 @@ export default {
     }
   },
   mounted(){
-    this.form.email="lolo@gmail.com"
-    this.form.password="12345"
+    this.form.email=""
+    this.form.password=""
     this.onLogin()
   },
   methods: {
