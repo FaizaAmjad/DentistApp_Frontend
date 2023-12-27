@@ -1,9 +1,31 @@
 <template>
   <div>
+    
     <div>
       <!--:key" is here to force the calendar to update to show changes without page reload since no connection to backend-->
     <Qalendar :key="calendarKey" :events="events" :config="config" @event-was-dragged="updateEditedEvent"
-      @event-was-resized="updateEditedEvent" @delete-event="deleteEvent" @edit-event="storeEvent" />
+      @event-was-resized="updateEditedEvent" @delete-event="deleteEvent" @edit-event="storeEvent" >
+      <template #eventDialog="props">
+       
+        <div v-if="props.eventDialogData && props.eventDialogData.title">
+        <div :style="{marginBottom: '8px'}">{{  props.eventDialogData.title }}</div>
+        <b-form @submit.prevent="bookEvent()">
+         <input class="flyout-input" type="email" id="email" v-model="email"  placeholder="Enter Patient email" trim required :style="{ width: '90%', padding: '8px', marginBottom: '8px' }" > 
+         <button class="close-flyout" type="submit" variant="primary" @click="bookEvent(props.closeEventDialog.id)">
+          Book!
+        </button>
+        </b-form>
+        <button class="close-flyout" @click="deleteEvent(props.eventDialogData.id)">
+          Delete!
+        </button>
+       
+        <button class="close-flyout" @click="unBookEvent(props.closeEventDialog.id)">
+          UnBook!
+        </button>
+      </div>
+    
+</template>
+  </Qalendar>
 
     </div>
     
@@ -60,10 +82,12 @@
 import { Qalendar } from "qalendar"
 import VueDatePicker from '@vuepic/vue-datepicker'
 import '@vuepic/vue-datepicker/dist/main.css'
+import { getSlots,deleteSlot } from '../apis/booking'
+import {format} from 'date-fns'
 export default {
-  mounted() {
-    document.body.style.backgroundColor = '#989898',
-      this.populateEvents()
+  async  mounted() {
+     document.body.style.backgroundColor = '#989898',
+      this.populateEvents()  
   },
   components: {
     Qalendar,
@@ -71,8 +95,8 @@ export default {
   },
   data() {
     return {
-      // Qalendar documentation: https://tomosterlund.github.io/qalendar/guide.html
-
+     
+      
       config: {
         week: {
           startsOn: 'monday',
@@ -81,7 +105,8 @@ export default {
         month: {
           showTrailingAndLeadingDates: false,
         },
-        locale: 'en-US',
+        locale: 'en-UK',
+        eventDialog:{isCustom:true},
         style: {
           fontFamily: 'Arial',
           colorSchemes: {
@@ -131,8 +156,8 @@ export default {
         isSilent: true,
         showCurrentTime: true,
         dayBoundaries: {
-          start: 8,
-          end: 18,
+          start: 0,
+          end: 23,
         },
         // remove to enable month view
         disableModes: ["month"],
@@ -166,56 +191,29 @@ export default {
 
       // TODO: send updated events back to DB
     },
-    populateEvents() {
+    async populateEvents() {
 
-      this.events = [
-        {
-          title: "Root Canal",
-          with: "Jane Doe",
-          time: { start: "2023-11-28 12:05", end: "2023-11-28 13:35" },
-          colorScheme: "red",
-          isEditable: true,
-          id: "10f",
-          description: "Patient doesn't want their teeth"
-        },
-        {
-          title: "General checkup",
-          with: "Jack Sparrow",
-          time: { start: "2023-11-29 10:05", end: "2023-11-29 12:35" },
-          colorScheme: "darkBlue",
-          isEditable: true,
-          id: "11f",
-          description: "Patient wants more teeth"
-        }
-      ]
-      /*
-      ^^^ replace with API call to populate events, possibly with for loop to populate events in the correct format
-      // send notification to patient
-
-      for (appointment in appointments) {
-      title: General type of appointment (Cleaning, root canal, etc.)so appointment.type,
-      with: appointment.patient.name,
-      time: { start: appointment.startTime, end: appointment.endTime },
-      color: "green", <-- possibly dependent on general type of appointment
-      isEditable: true,
-      id: string of ObjectId of document in Schema?,
-      description: appointment.issue
+      const allSlots= await getSlots()
+   
+   this.events=allSlots.map(event=>{
+     const startDate = new Date(event.start)
+     const endDate = new Date(event.end)
+     return {  
+      title: "hello world ",
+       with: " ",
+       time: { 
+        start: `${format(startDate, 'yyyy-MM-dd HH:mm')}`, 
+        end: `${format(endDate, 'yyyy-MM-dd HH:mm')}`, 
+      },
+       colorScheme: "darkGreen",
+       isEditable: true,
+       id: event._id,
+       description: " iam ur teeth "
       }
-
-      Assumed format 
-
-      appointment: {
-        type:
-        patient: {
-          name:
-        }
-        startTime:
-        endTime:
-        issue:
-      }
-      */
+   })
     },
-    deleteEvent(eventId) {
+    async deleteEvent(eventId) {
+      await deleteSlot(eventId);
       const index = this.events.findIndex(event => event.id === eventId)
       if (index !== -1) {
         this.events.splice(index, 1)

@@ -7,10 +7,10 @@ export default {
     WebHeaderVue,
     WebFooter,
   },
- async created() {
+/*  async created() {
         const response = await axios.get('dentist');
         this.$store.dispatch('dentist', response.data);
-        }
+        } */
 
 }
 </script>
@@ -18,9 +18,9 @@ export default {
 <template>
   <WebHeaderVue/>
   <RouterView />
-  <footer style="padding-top: 100px;">
+  <!-- <footer style="padding-top: 100px;">
    <WebFooter/>
-  </footer>
+  </footer> -->
 </template>
 
 <style scoped>

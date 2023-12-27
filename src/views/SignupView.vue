@@ -87,8 +87,8 @@
              
             
             <b-form-group label="Clinic" label-for="clinicDropdown" label-cols-md="2">
-            <b-dropdown id="clinicDropdown" text="Select clinic" block variant="primary" lazy>
-              <b-dropdown-item-button v-for="clinic in clinics" :key="allClinics" @click="clinic = clinic">{{ clinic.name }}</b-dropdown-item-button>
+            <b-dropdown id="clinicDropdown" :text="selectedClinic?selectedClinic.clinicName: 'Select clinic' " block variant="primary" lazy>
+              <b-dropdown-item-button v-for="clinic in allClinics" :key="clinic.id" @click="selectedClinic = clinic">{{ clinic.clinicName }}</b-dropdown-item-button>
             </b-dropdown>
           </b-form-group>
 
@@ -114,6 +114,11 @@ export default {
   components: {
     Error
   },
+  
+  async mounted(){
+       this.allClinics = await getClinics()
+       
+     },
   data() {
     return {
       form: {
@@ -123,16 +128,18 @@ export default {
         email: '',
         password: '',
         confirmPassword: '',
-        admin:Boolean
+        admin:false
         
       },
-      error: ''
+      error: '',
+      allClinics:[],
+      selectedClinic:null
     }
   },
   methods: {
     async onSignUp() {
       try {
-        //   console.log(' submitted ' + this.form.email)
+        //   
         // TODO create a field for the theme on the signup form
         const dentist = await createDentist(
           this.form.firstName,
@@ -140,18 +147,16 @@ export default {
           this.form.socialNumber,
           this.form.email,
           this.form.password,
-          this.form.admin
+          this.form.admin,
+          this.selectedClinic._id
         )
 
-        const allClinics = await getClinics()
+        //const allClinics = await getClinics()
       
       } catch (error) {
         this.error = 'En error occurred.'
       }
-    },
-     async getAllClinics(){
-      return getClinics
-     }
+    }
   }
 }
 </script>
@@ -161,4 +166,54 @@ button {
   color: var(--button-letter);
   border: none;
 }
+
+
+
+h1 {
+  margin: 0;
+  padding: 0;
+  font-weight: 900;
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  color:rgb(14, 14, 83);
+}  
+
+h2{
+ font-size: large;
+ margin-bottom: 40px;
+}
+.background{
+  background-color: rgba(74, 100, 161, 0.903);
+  padding: 3%;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+.container {
+  
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  height: 70vh;
+  border-radius:10%;
+  border-color: black;
+}
+.registration-box {
+  background-color: white;
+  text-align: center;
+  margin: center;
+  font-style: initial;
+  font-weight: 600;
+  padding-block: 0;
+  padding: 20%;
+  border-width: 10px;
+  border-style: initial;
+  border-radius: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 768px) {
+  .registration-box {
+    padding: 5%;
+  }
+}
+
 </style>

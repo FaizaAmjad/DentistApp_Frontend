@@ -15,11 +15,15 @@ export default {
       error: ''
     }
   },
- 
+  mounted(){
+    this.form.email=""
+    this.form.password=""
+    this.onLogin()
+  },
   methods: {
     async onLogin() {
       try {
-        console.log('Logged in' + this.form.email)
+        
 
         const token = await login(undefined, this.form.email, this.form.password)
         localStorage.setItem('token', token)
@@ -61,9 +65,7 @@ export default {
       </b-form>
 
 
-     <!-- <div class="create-account-prompt">
-      <p>Don't have an account?   <router-link to="/register" div class="hyperlink"> Create an account.</router-link> </p>
-     </div> -->
+     
 
     
     </div>

@@ -1,13 +1,14 @@
 import { Api } from './api'
 
-export const createDentist = async (firstName, lastName, SSN, email, password,admin) => {
+export const createDentist = async (firstName, lastName, SSN, email, password,admin,clinic_id) => {
   const response = await Api().post('dentists', {
     firstName: firstName,
     lastName: lastName,
     SSN: SSN,
     email: email,
     password:  password,
-    admin: admin
+    admin: admin,
+    clinic_id:clinic_id
     
   })
   return response.data
