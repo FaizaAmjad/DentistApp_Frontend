@@ -25,7 +25,8 @@
          :style="{ width: '90%', padding: '8px', marginBottom: '8px' }" 
          > 
          
-         <button 
+         <button
+         v-if="!props.eventDialogData.booked"
          class="close-flyout" 
          type="submit" 
          variant="primary" 
@@ -33,21 +34,25 @@
          >
         Book!
         </button>
-        </b-form>
-        
-        <button 
-        class="close-flyout" 
-        @click="deleteEvent(props.eventDialogData.id)"
-        >
-        Delete!
-        </button>
-       
-        <button 
+
+        <button
+        v-if="props.eventDialogData.booked"
         class="close-flyout" 
         @click="unBookEvent(props.eventDialogData.id)"
         >
         UnBook!
         </button>
+
+        </b-form>
+        
+        <button
+        v-if="!props.eventDialogData.booked" 
+        class="close-flyout" 
+        @click="deleteEvent(props.eventDialogData.id)"
+        >
+        Delete!
+        </button>
+        
       </div>
     
 </template>
@@ -264,8 +269,9 @@ export default {
           } else if (error.response.status === 400) {
             alert('Invalid patients creadentials.');
           }
-        }
+        }else {
         alert('Error booking event. Please try again.');
+        }
       }
     },
 
@@ -290,7 +296,15 @@ export default {
         this.props.closeEventDialog(eventId)
       } catch (error) {
         console.error('Error unbooking event:', error);
+        if (error.response) {
+          if (error.response.status === 500) {
+            alert('Server error in unbooking. Please try again later.');
+          } else if (error.response.status === 400) {
+            alert('Invalid patients creadentials.');
+          }
+        }else {
         alert('Error unbooking event. Please try again.');
+        }
       }
     },
 
