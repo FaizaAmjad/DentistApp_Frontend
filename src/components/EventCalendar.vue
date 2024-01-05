@@ -3,25 +3,57 @@
     
     <div>
       <!--:key" is here to force the calendar to update to show changes without page reload since no connection to backend-->
-    <Qalendar :key="calendarKey" :events="events" :config="config" @event-was-dragged="updateEditedEvent"
-      @event-was-resized="updateEditedEvent" @delete-event="deleteEvent" @edit-event="storeEvent" >
+    <Qalendar 
+      :key="calendarKey"
+      :events="events" 
+      :config="config" 
+      @delete-event="deleteEvent" 
+      @edit-event="storeEvent"
+      >
       <template #eventDialog="props">
        
-        <div v-if="props.eventDialogData && props.eventDialogData.title ">
-        <div :style="{marginBottom: '8px'}">{{  props.eventDialogData.title }}</div>
-        <b-form v-if="!props.eventDialogData.booked" @submit.prevent="bookEvent()">
-         <input  class="flyout-input" type="email" id="email" v-model="email"  placeholder="Enter Patient email" trim required :style="{ width: '90%', padding: '8px', marginBottom: '8px' }" > 
-         <button class="close-flyout" type="submit" variant="primary" @click="bookEvent(props.closeEventDialog.id)">
-          Book!
+        <div v-if="props.eventDialogData && props.eventDialogData.title " :style="{marginBottom: '8px', padding: '8px'}">
+        <div >
+          <p>Slots Date and Time: {{ props.eventDialogData.time.start }}</p></div>
+        <b-form v-if="!props.eventDialogData.booked" @submit.prevent="">
+         <input  
+         class="flyout-input" 
+         type="email" id="email" 
+         v-model="email"  
+         placeholder="Enter Patient email" 
+         trim 
+         required 
+         :style="{ width: '90%', padding: '8px', marginBottom: '8px' }" 
+         > 
+         
+         <button
+         v-if="!props.eventDialogData.booked"
+         class="close-flyout" 
+         type="submit" 
+         variant="primary" 
+         @click="bookEvent(props.eventDialogData.id)"
+         >
+        Book!
         </button>
+
+        <button
+        v-if="props.eventDialogData.booked"
+        class="close-flyout" 
+        @click="unBookEvent(props.eventDialogData.id)"
+        >
+        UnBook!
+        </button>
+
         </b-form>
-        <button class="close-flyout" @click="deleteEvent(props.eventDialogData.id)">
-          Delete!
+        
+        <button
+        v-if="!props.eventDialogData.booked" 
+        class="close-flyout" 
+        @click="deleteEvent(props.eventDialogData.id)"
+        >
+        Delete!
         </button>
        
-        <button v-if="props.eventDialogData.booked" class="close-flyout" @click="unBookEvent(props.closeEventDialog.id)">
-          UnBook!
-        </button>
       </div>
     
 </template>
@@ -82,7 +114,8 @@
 import { Qalendar } from "qalendar"
 import VueDatePicker from '@vuepic/vue-datepicker'
 import '@vuepic/vue-datepicker/dist/main.css'
-import { getSlots,deleteSlot } from '../apis/booking'
+import { getSlots,deleteSlot, book, unBook } from '../apis/booking'
+import { getUsers } from '../apis/users'
 import {format} from 'date-fns'
 export default {
   async  mounted() {
@@ -95,7 +128,7 @@ export default {
   },
   data() {
     return {
-     
+      email: '',
       
       config: {
         week: {
@@ -198,9 +231,9 @@ export default {
    this.events=allSlots.map(event=>{
      const startDate = new Date(event.start)
      const endDate = new Date(event.end)
-     if(event.booked){
+     /*if(event.booked){
        
-     }
+     }*/
      return {  
       title:event.booked?"patient":"available",
        with: " ",
@@ -217,6 +250,76 @@ export default {
       }
    })
     },
+
+    async bookEvent(eventId) {
+      try {
+        if (!this.validateEmail(this.email)) {
+          alert('Please enter a valid email address.');
+          return;
+        }
+        if (!this.email) {
+          alert("Please enter the patient's email before booking.");
+          return;
+        }
+        console.log('this.email : ' + this.email)
+        const user = await getUsers(this.email)
+        console.log('eventId:  ' + eventId)
+        console.log('user ID : ' + user)
+        await book(eventId, user);
+        alert(`Event with ID ${eventId} booked successfully for ${this.email}`);
+        
+        // this.$emit('close-event-dialog');
+      } catch (error) {
+        console.error('Error booking event:', error);
+        if (error.response) {
+          if (error.response.status === 500) {
+            alert('Server error in booking. Please try again later.');
+          } else if (error.response.status === 400) {
+            alert('Invalid patients creadentials.');
+          }
+        }else {
+        alert('Error booking event. Please try again.');
+        }
+      }
+    },
+
+    validateEmail(email) {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return emailRegex.test(email);
+    },
+
+    async unBookEvent(eventId) {
+      try {
+        if (!this.validateEmail(this.email)) {
+          alert('Please enter a valid email address.');
+          return;
+        }
+        if (!this.email) {
+          alert("Please enter the patient's email before booking.");
+          return;
+        }
+        await unBook(eventId);
+        alert(`Event with ID ${eventId} unbooked successfully for ${this.email}`);
+        
+        this.props.closeEventDialog(eventId)
+      } catch (error) {
+        console.error('Error unbooking event:', error);
+        if (error.response) {
+          if (error.response.status === 500) {
+            alert('Server error in unbooking. Please try again later.');
+          } else if (error.response.status === 400) {
+            alert('Invalid patients creadentials.');
+          }
+        }else {
+        alert('Error unbooking event. Please try again.');
+        }
+      }
+    },
+
+    closeDialog() {
+      this.$emit('close-event-dialog');
+    },
+
     async deleteEvent(eventId) {
       await deleteSlot(eventId);
       const index = this.events.findIndex(event => event.id === eventId)
