@@ -36,6 +36,8 @@
 import { mapGetters, useStore } from 'vuex'
 import { useRouter, useRoute } from 'vue-router'
 import { onMounted } from 'vue'
+import { disConnect, connect } from '../ws'
+import {getDentistInfo} from '../apis/dentists'
 import Error from '../components/Error.vue'
 export default {
   name: 'nav-bar',
@@ -46,19 +48,33 @@ export default {
       const router = useRouter()
       const route = useRoute()
       
+      
+      defineDentist().then((dentistDetails) => {
+        
+        connect(dentistDetails.id)
+        
       if (store.dentist && [ '/login'].includes(route.path)) {
         router.push('/home')
       } else if (!store.dentist && ![ '/login'].includes(route.path)) {
         router.push('/login')
       }
-      
+    }).catch(error=>{console.log(error)});
+
     })
+
     const store = useStore()
     const router = useRouter()
     const handleLogout = () => {
+      disConnect()
       localStorage.removeItem('token')
       store.dispatch('dentist', null)
       router.push('/login')
+    }
+
+    const defineDentist = async () => {
+      const dentistDetails = await getDentistInfo()
+      store.dispatch('user', dentistDetails)
+      return dentistDetails
     }
 
     return { handleLogout }

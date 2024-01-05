@@ -7,10 +7,10 @@
       @event-was-resized="updateEditedEvent" @delete-event="deleteEvent" @edit-event="storeEvent" >
       <template #eventDialog="props">
        
-        <div v-if="props.eventDialogData && props.eventDialogData.title">
+        <div v-if="props.eventDialogData && props.eventDialogData.title ">
         <div :style="{marginBottom: '8px'}">{{  props.eventDialogData.title }}</div>
-        <b-form @submit.prevent="bookEvent()">
-         <input class="flyout-input" type="email" id="email" v-model="email"  placeholder="Enter Patient email" trim required :style="{ width: '90%', padding: '8px', marginBottom: '8px' }" > 
+        <b-form v-if="!props.eventDialogData.booked" @submit.prevent="bookEvent()">
+         <input  class="flyout-input" type="email" id="email" v-model="email"  placeholder="Enter Patient email" trim required :style="{ width: '90%', padding: '8px', marginBottom: '8px' }" > 
          <button class="close-flyout" type="submit" variant="primary" @click="bookEvent(props.closeEventDialog.id)">
           Book!
         </button>
@@ -19,7 +19,7 @@
           Delete!
         </button>
        
-        <button class="close-flyout" @click="unBookEvent(props.closeEventDialog.id)">
+        <button v-if="props.eventDialogData.booked" class="close-flyout" @click="unBookEvent(props.closeEventDialog.id)">
           UnBook!
         </button>
       </div>
@@ -198,17 +198,22 @@ export default {
    this.events=allSlots.map(event=>{
      const startDate = new Date(event.start)
      const endDate = new Date(event.end)
+     if(event.booked){
+       
+     }
      return {  
-      title: "hello world ",
+      title:event.booked?"patient":"available",
        with: " ",
        time: { 
         start: `${format(startDate, 'yyyy-MM-dd HH:mm')}`, 
         end: `${format(endDate, 'yyyy-MM-dd HH:mm')}`, 
       },
-       colorScheme: "darkGreen",
+       colorScheme: event.booked?"darkBlue":"darkGreen",
        isEditable: true,
        id: event._id,
-       description: " iam ur teeth "
+       description: " iam ur teeth ",
+       booked:event.booked?true:false
+       
       }
    })
     },

@@ -1,5 +1,6 @@
 <script>
 import { login, getDentistInfo } from '../apis/dentists'
+import { connect } from '../ws'
 import Error from '../components/Error.vue'
 export default {
   name: 'login-view',
@@ -29,6 +30,7 @@ export default {
         localStorage.setItem('token', token)
 
         const dentistDetails = await getDentistInfo()
+        connect(dentistDetails.id)
         this.$store.dispatch('dentist', dentistDetails)
 
         this.$router.push('/')
