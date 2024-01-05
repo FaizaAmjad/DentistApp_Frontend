@@ -12,8 +12,9 @@
       >
       <template #eventDialog="props">
        
-        <div v-if="props.eventDialogData && props.eventDialogData.title">
-        <div :style="{marginBottom: '8px'}">{{  props.eventDialogData.title }}</div>
+        <div v-if="props.eventDialogData && props.eventDialogData.title" :style="{marginBottom: '8px', padding: '8px'}">
+        <div >
+          <p>Slots Date and Time: {{ props.eventDialogData.time.start }}</p></div>
         <b-form @submit.prevent="">
          <input 
          class="flyout-input" 
@@ -114,7 +115,7 @@ import { Qalendar } from "qalendar"
 import VueDatePicker from '@vuepic/vue-datepicker'
 import '@vuepic/vue-datepicker/dist/main.css'
 import { getSlots,deleteSlot, book, unBook } from '../apis/booking'
-import { getUserInfo } from '../apis/users'
+import { getUsers } from '../apis/users'
 import {format} from 'date-fns'
 export default {
   async  mounted() {
@@ -256,7 +257,9 @@ export default {
           return;
         }
         console.log('this.email : ' + this.email)
-        const userDetails = await getUserInfo(this.email) 
+        const users = await getUsers()
+        const userDetails = users.filter(user => user.email === this.email);
+        console.log('this user ID : ' + userDetails._id)
         await book(eventId, userDetails._id);
         alert(`Event with ID ${eventId} booked successfully for ${this.email}`);
         
