@@ -12,11 +12,11 @@
       >
       <template #eventDialog="props">
        
-        <div v-if="props.eventDialogData && props.eventDialogData.title" :style="{marginBottom: '8px', padding: '8px'}">
+        <div v-if="props.eventDialogData && props.eventDialogData.title " :style="{marginBottom: '8px', padding: '8px'}">
         <div >
           <p>Slots Date and Time: {{ props.eventDialogData.time.start }}</p></div>
-        <b-form @submit.prevent="">
-         <input 
+        <b-form v-if="!props.eventDialogData.booked" @submit.prevent="">
+         <input  
          class="flyout-input" 
          type="email" id="email" 
          v-model="email"  
@@ -53,7 +53,7 @@
         >
         Delete!
         </button>
-        
+       
       </div>
     
 </template>
@@ -231,23 +231,28 @@ export default {
    this.events=allSlots.map(event=>{
      const startDate = new Date(event.start)
      const endDate = new Date(event.end)
+     /*if(event.booked){
+       
+     }*/
      return {  
-      title: "hello world ",
+      title:event.booked?"patient":"available",
        with: " ",
        time: { 
         start: `${format(startDate, 'yyyy-MM-dd HH:mm')}`, 
         end: `${format(endDate, 'yyyy-MM-dd HH:mm')}`, 
       },
-       colorScheme: "darkGreen",
+       colorScheme: event.booked?"darkBlue":"darkGreen",
        isEditable: true,
        id: event._id,
-       description: " iam ur teeth "
+       description: " iam ur teeth ",
+       booked:event.booked?true:false
+       
       }
    })
     },
 
     async bookEvent(eventId) {
-      //try {
+      try {
         if (!this.validateEmail(this.email)) {
           alert('Please enter a valid email address.');
           return;
@@ -264,7 +269,7 @@ export default {
         alert(`Event with ID ${eventId} booked successfully for ${this.email}`);
         
         // this.$emit('close-event-dialog');
-      /*} catch (error) {
+      } catch (error) {
         console.error('Error booking event:', error);
         if (error.response) {
           if (error.response.status === 500) {
@@ -275,7 +280,7 @@ export default {
         }else {
         alert('Error booking event. Please try again.');
         }
-      }*/
+      }
     },
 
     validateEmail(email) {
