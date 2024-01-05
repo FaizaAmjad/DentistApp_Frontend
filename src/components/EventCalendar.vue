@@ -247,7 +247,7 @@ export default {
     },
 
     async bookEvent(eventId) {
-      try {
+      //try {
         if (!this.validateEmail(this.email)) {
           alert('Please enter a valid email address.');
           return;
@@ -257,14 +257,14 @@ export default {
           return;
         }
         console.log('this.email : ' + this.email)
-        const users = await getUsers()
-        const userDetails = users.filter(user => user.email === this.email);
-        console.log('this user ID : ' + userDetails._id)
-        await book(eventId, userDetails._id);
+        const user = await getUsers(this.email)
+        console.log('eventId:  ' + eventId)
+        console.log('user ID : ' + user)
+        await book(eventId, user);
         alert(`Event with ID ${eventId} booked successfully for ${this.email}`);
         
         // this.$emit('close-event-dialog');
-      } catch (error) {
+      /*} catch (error) {
         console.error('Error booking event:', error);
         if (error.response) {
           if (error.response.status === 500) {
@@ -275,7 +275,7 @@ export default {
         }else {
         alert('Error booking event. Please try again.');
         }
-      }
+      }*/
     },
 
     validateEmail(email) {
