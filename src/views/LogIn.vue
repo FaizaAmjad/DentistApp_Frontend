@@ -30,9 +30,26 @@ export default {
 
         this.$router.push('/')
       } catch (error) {
-        this.error = 'Invalid email/password.'
+        if (error.response.status === 404) {
+          this.error = 'Invalid email/password. Please try again.'
+        } else if (error.response.status === 403) {
+          this.error = 'Not authorized to view this resource. Contact your admin.'
+        } else if (error.response.status === 500) {
+          this.error = 'Server error. Check your MQTT broker is running.'
+        } else if (error.response.status === 400) {
+          this.error = 'Incorrect input.'
+        } else if (error.response.status === 429) {
+          this.error = 'Too frequent requests. Try again later.'
+        } else if (error.response.status === 502) {
+          this.error = 'Server error.'
+        } else if (error.response.status === 503) {
+          this.error = 'Server unavailable. Try again later.'
+        } else {
+          this.error = 'Unable to log in currently. Please try again later.'
+        }
       }
     }
+
   }
 }
 </script>
@@ -63,10 +80,6 @@ export default {
 
             <b-button type="submit" variant="primary">LOGIN</b-button>
           </b-form>
-
-
-
-
 
         </div>
 
