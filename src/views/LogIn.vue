@@ -1,6 +1,5 @@
 <script>
 import { login, getDentistInfo } from '../apis/dentists'
-import { connect } from '../ws'
 import Error from '../components/Error.vue'
 export default {
   name: 'login-view',
@@ -13,24 +12,20 @@ export default {
         email: '',
         password: ''
       },
-      error: ''
+      error: '',
     }
   },
-  mounted(){
-    this.form.email=""
-    this.form.password=""
-    this.onLogin()
+  mounted() {
+    this.form.email = ""
+    this.form.password = ""
   },
   methods: {
     async onLogin() {
       try {
-        
-
         const token = await login(undefined, this.form.email, this.form.password)
         localStorage.setItem('token', token)
 
         const dentistDetails = await getDentistInfo()
-        connect(dentistDetails.id)
         this.$store.dispatch('dentist', dentistDetails)
 
         this.$router.push('/')
@@ -42,88 +37,95 @@ export default {
 }
 </script>
 
-<template>  
-<head>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-</head>
-<div class="background">
-  <div class="container">
+<template>
+  <div>
 
-    <div class="login-box">
-  
-      <h1>Log In</h1>
-      <h2>Log in to get started with your work!</h2> 
-  
-      <b-form @submit="onLogin">
-          <b-form-group label="Email" label-for="email" label-cols-md="1">
-            <b-form-input id="email" v-model="form.email" type="email" required></b-form-input>
-          </b-form-group>
+    <head>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <div class="background">
+      <div class="container">
 
-          <b-form-group label="Password" label-for="password" label-cols-md="2">
-            <b-form-input id="password" v-model="form.password" type="password" required></b-form-input>
-          </b-form-group>
+        <div class="login-box">
+          <Error :error=this.error v-if="this.error !== ''"></Error>
 
-          <b-button type="submit" variant="primary">LOGIN</b-button>
-      </b-form>
+          <h1>Log In</h1>
+          <h2>Log in to get started with your work!</h2>
+
+          <b-form @submit="onLogin">
+            <b-form-group label="Email" label-for="email" label-cols-md="1">
+              <b-form-input id="email" v-model="form.email" type="email" required></b-form-input>
+            </b-form-group>
+
+            <b-form-group label="Password" label-for="password" label-cols-md="2">
+              <b-form-input id="password" v-model="form.password" type="password" required></b-form-input>
+            </b-form-group>
+
+            <b-button type="submit" variant="primary">LOGIN</b-button>
+          </b-form>
 
 
-     
 
-    
+
+
+        </div>
+
+      </div>
     </div>
-  
   </div>
-</div>
 </template>
 
 <style scoped>
-
 h1 {
   margin: 0;
   padding: 0;
   font-weight: 900;
   font-family: Georgia, 'Times New Roman', Times, serif;
-  color:rgb(14, 14, 83);
-}  
-
-h2{
- font-size: large;
- margin-bottom: 40px;
+  color: rgb(14, 14, 83);
 }
-.background{
+
+h2 {
+  font-size: large;
+  margin-bottom: 40px;
+}
+
+.background {
   background-color: rgba(74, 100, 161, 0.903);
   padding: 3%;
   min-height: 100vh;
   box-sizing: border-box;
 }
+
 .container {
-  
+
   justify-content: center;
   align-items: center;
   text-align: center;
   height: 70vh;
-  border-radius:10%;
+  border-radius: 10%;
   border-color: black;
 }
-.login-box{
+
+.login-box {
   background-color: white;
   text-align: center;
   margin: center;
-  font-style:initial;
+  font-style: initial;
   font-weight: 600;
   padding-block: 0;
   padding: 20%;
   border-width: 10px;
-  border-style:initial;
+  border-style: initial;
   border-radius: 20px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
-.create-account-prompt{
+
+.create-account-prompt {
   font-size: small;
   margin-top: 20px;
 }
 
-.hyperlink{
+.hyperlink {
   color: rgb(51, 12, 226);
 }
 
@@ -132,5 +134,4 @@ h2{
     padding: 5%;
   }
 }
-
 </style>
