@@ -4,6 +4,7 @@ import AboutView from '../views/AboutView.vue'
 import LogIn from '../views/LogIn.vue'
 import AccountView from '../views/AccountView.vue';
 import RegisterClinic from '../views/RegisterClinic.vue'
+import EmergencySlot from '../views/EmergencySlot.vue'
 
 
 const router = createRouter({
@@ -55,6 +56,11 @@ const router = createRouter({
       name: 'signup',
       component: () => import('../views/SignupView.vue')
     },
+    {
+      path: '/create-emergencySlot',
+      name: 'emergencySlot',
+      component: EmergencySlot
+    }
     
     
   ]
