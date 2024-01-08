@@ -36,6 +36,8 @@
         Book!
         </button>
 
+        </b-form>
+        
         <button
         v-if="props.eventDialogData.booked"
         class="close-flyout" 
@@ -44,10 +46,8 @@
         UnBook!
         </button>
 
-        </b-form>
-        
         <button
-        v-if="!props.eventDialogData.booked" 
+         
         class="close-flyout" 
         @click="deleteEvent(props.eventDialogData.id)"
         >
@@ -115,8 +115,9 @@ import { Qalendar } from "qalendar"
 import VueDatePicker from '@vuepic/vue-datepicker'
 import '@vuepic/vue-datepicker/dist/main.css'
 import { getSlots,deleteSlot, book, unBook } from '../apis/booking'
-import { getUsers } from '../apis/users'
+import { getUsers,getUser } from '../apis/users'
 import {format} from 'date-fns'
+
 export default {
   async  mounted() {
      document.body.style.backgroundColor = '#989898',
@@ -228,14 +229,15 @@ export default {
 
       const allSlots= await getSlots()
    
-   this.events=allSlots.map(event=>{
+   const events= allSlots.map( async event=>{
      const startDate = new Date(event.start)
      const endDate = new Date(event.end)
-     /*if(event.booked){
-       
-     }*/
+     const userData=event.patient_id? await getUser(event.patient_id):undefined;
+
+     
+
      return {  
-      title:event.booked?"patient":"available",
+      title:event.booked?userData.firstName:"available",
        with: " ",
        time: { 
         start: `${format(startDate, 'yyyy-MM-dd HH:mm')}`, 
@@ -249,6 +251,9 @@ export default {
        
       }
    })
+   
+   this.events= await Promise.all(events) ;
+   
     },
 
     async bookEvent(eventId) {
@@ -261,14 +266,20 @@ export default {
           alert("Please enter the patient's email before booking.");
           return;
         }
-        console.log('this.email : ' + this.email)
-        const user = await getUsers(this.email)
-        console.log('eventId:  ' + eventId)
-        console.log('user ID : ' + user)
-        await book(eventId, user);
-        alert(`Event with ID ${eventId} booked successfully for ${this.email}`);
+       
+        const users = await getUsers(this.email)
         
-        // this.$emit('close-event-dialog');
+        if(users.length==0){
+          alert("user not found")
+
+          return
+        }
+        const user=users[0];
+       
+        await book(eventId, user._id);
+        
+        this.props.closeEventDialog(eventId)
+        /* this.$emit('close-event-dialog'); */
       } catch (error) {
         console.error('Error booking event:', error);
         if (error.response) {
@@ -278,7 +289,7 @@ export default {
             alert('Invalid patients creadentials.');
           }
         }else {
-        alert('Error booking event. Please try again.');
+       populateEvents()
         }
       }
     },
@@ -290,16 +301,9 @@ export default {
 
     async unBookEvent(eventId) {
       try {
-        if (!this.validateEmail(this.email)) {
-          alert('Please enter a valid email address.');
-          return;
-        }
-        if (!this.email) {
-          alert("Please enter the patient's email before booking.");
-          return;
-        }
+        
         await unBook(eventId);
-        alert(`Event with ID ${eventId} unbooked successfully for ${this.email}`);
+        
         
         this.props.closeEventDialog(eventId)
       } catch (error) {
@@ -311,7 +315,7 @@ export default {
             alert('Invalid patients creadentials.');
           }
         }else {
-        alert('Error unbooking event. Please try again.');
+        populateEvents()
         }
       }
     },

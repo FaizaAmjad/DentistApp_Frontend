@@ -53,11 +53,7 @@
             
              
             
-            <!-- <b-form-group label="Clinic" label-for="clinicDropdown" label-cols-md="2">
-            <b-dropdown id="clinicDropdown" :text="selectedClinic?selectedClinic.clinicName: 'Select clinic' " block variant="primary" lazy>
-              <b-dropdown-item-button v-for="clinic in allClinics" :key="clinic.id" @click="selectedClinic = clinic">{{ clinic.clinicName }}</b-dropdown-item-button>
-            </b-dropdown>
-          </b-form-group> -->
+            
 
       
           

@@ -27,8 +27,12 @@ export default {
 
         const dentistDetails = await getDentistInfo()
         this.$store.dispatch('dentist', dentistDetails)
-
-        this.$router.push('/')
+      if(dentistDetails.admin){
+        this.$router.push('/account')
+      }else{
+        this.$router.push('/home')
+      }
+        
       } catch (error) {
         if (error.response.status === 404) {
           this.error = 'Invalid email/password. Please try again.'
@@ -70,7 +74,7 @@ export default {
           <h2>Log in to get started with your work!</h2>
 
           <b-form @submit="onLogin">
-            <b-form-group label="Email" label-for="email" label-cols-md="1">
+            <b-form-group label="Email " label-for="email" label-cols-md="1">
               <b-form-input id="email" v-model="form.email" type="email" required></b-form-input>
             </b-form-group>
 

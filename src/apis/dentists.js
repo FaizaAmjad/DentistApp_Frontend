@@ -45,3 +45,8 @@ export const deleteDentist = async (user_id) => {
   const response = await Api().delete(`dentists/${user_id}`)
   return response.data
 }
+
+export const getDentists = async () => {
+  const response = await Api().get('dentists')
+  return response.data
+}
