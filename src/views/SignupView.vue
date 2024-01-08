@@ -4,7 +4,7 @@
       <div class="auth-wrapper">
         <div class="auth-inner">
           <div>
-            <Error v-if="error" :error="error"></Error>
+            <Error v-if="this.error!==''" :error="this.error"></Error>
             <h3>Add a Dentist</h3>
             <p>Welcome to Dentist sign up page!</p>
             <hr />
@@ -155,7 +155,20 @@ export default {
         alert('Dentist registered')
         this.$router.push('/account')
       } catch (error) {
-        this.error = 'An error occurred.'
+        if (error.response.data === 'Forbidden'){
+          this.error = 'Only admins can perform this action.'
+        } else if(error.response.data === 'Input missing data, All data required'){
+          this.error = 'Fill all fields.'
+        } else if(error.response.data === 'Dentist already exists'){
+          this.error = 'This dentist is already registered.'
+        } else if(error.response.data === 'Password is wrong'){
+          this.error = 'Passwords do not match.'
+        } else if(error.response.status === 500){
+          this.error = 'Server error. Please try again later.'
+        } else {
+          this.error = 'An error occurred.'
+        }
+        
       }
     }
   }

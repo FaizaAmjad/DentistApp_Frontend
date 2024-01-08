@@ -81,8 +81,10 @@
           this.error='All input fields are required to be filled.'
         } else if (error.response.data === 'Clinic already exists'){
           this.error = 'This clinic already exists.'
-        } else if (error.response.data === 403 && error.response.data === 'Forbidden. Only admins can perform this action.'){
+        } else if (error.response.data === 'Forbidden. Only admins can perform this action.'){
           this.error = 'This action needs admin privilege.'
+        } else if(error.response.status === 500){
+          this.error = 'Server error. Please try again later.'
         } else {
         this.error='Registration unsuccessful. Please try again later.'
         }
