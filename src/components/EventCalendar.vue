@@ -117,6 +117,7 @@ import '@vuepic/vue-datepicker/dist/main.css'
 import { getSlots,deleteSlot, book, unBook } from '../apis/booking'
 import { getUsers,getUser } from '../apis/users'
 import {format} from 'date-fns'
+
 export default {
   async  mounted() {
      document.body.style.backgroundColor = '#989898',
@@ -276,9 +277,9 @@ export default {
         const user=users[0];
        
         await book(eventId, user._id);
-        populateEvents()
         
-        this.$emit('close-event-dialog');
+        this.props.closeEventDialog(eventId)
+        /* this.$emit('close-event-dialog'); */
       } catch (error) {
         console.error('Error booking event:', error);
         if (error.response) {
@@ -288,7 +289,7 @@ export default {
             alert('Invalid patients creadentials.');
           }
         }else {
-        alert('Error booking event. Please try again.');
+       populateEvents()
         }
       }
     },
@@ -300,16 +301,9 @@ export default {
 
     async unBookEvent(eventId) {
       try {
-        if (!this.validateEmail(this.email)) {
-          alert('Please enter a valid email address.');
-          return;
-        }
-        if (!this.email) {
-          alert("Please enter the patient's email before booking.");
-          return;
-        }
+        
         await unBook(eventId);
-        alert(`Event with ID ${eventId} unbooked successfully for ${this.email}`);
+        
         
         this.props.closeEventDialog(eventId)
       } catch (error) {
@@ -321,7 +315,7 @@ export default {
             alert('Invalid patients creadentials.');
           }
         }else {
-        alert('Error unbooking event. Please try again.');
+        populateEvents()
         }
       }
     },

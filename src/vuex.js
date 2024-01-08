@@ -13,15 +13,20 @@ const store = new Vuex.Store({
         }
     },
     actions: {
-        dentist(context, dentist) {
+        dentist({commit}, dentist) {
             
-            context.commit('dentist', dentist)
+            commit('SET_DENTIST', dentist)
+            commit('dentist', dentist)
         }
     },
     mutations: {
         dentist(state, dentist) {
             state.dentist = dentist;
-        }
+        },
+        SET_DENTIST(state, dentist) {
+            state.dentist = dentist
+          },
+       
     }
 })
 

@@ -1,13 +1,9 @@
 <template>
   <nav class="navtab">
 
-<!-- <div class="left-links">
- <RouterLink class="tab" to="/">Home</RouterLink>
-</div> -->
-
 <div class="right-links">
   
-    <b-dropdown v-if="!dentist">
+    <b-dropdown v-if="!store?.getters.dentist">
       <template #button-content>
         <span class="account-button">Account</span>
       </template>
@@ -16,15 +12,15 @@
       
     </b-dropdown>
     
-    <b-dropdown v-if="dentist">
+    <b-dropdown v-if="store?.getters.dentist">
       <template #button-content>
         <span class="account-button">Account</span>
       </template>
-      <b-dropdown-item v-if="!dentist.admin" to="/create-slots">Slots Management</b-dropdown-item>
-      <b-dropdown-item v-if="dentist.admin" to="/signup">Create Dentist</b-dropdown-item>
-      <b-dropdown-item v-if="dentist.admin" to="/registerClinic">Create Clinic</b-dropdown-item>
+      <b-dropdown-item v-if="!store?.getters.dentist.admin" to="/create-slots">Slots Management</b-dropdown-item>
+      <b-dropdown-item v-if="store?.getters.dentist.admin" to="/signup">Create Dentist</b-dropdown-item>
+      <b-dropdown-item v-if="store?.getters.dentist.admin" to="/registerClinic">Create Clinic</b-dropdown-item>
       <b-dropdown-item to="/account">Account</b-dropdown-item>
-      <b-dropdown-item to="/">Home</b-dropdown-item>
+      <b-dropdown-item v-if="!store?.getters.dentist.admin" to="/home">Home</b-dropdown-item>
       <b-dropdown-item  @click="handleLogout">logout</b-dropdown-item>
     </b-dropdown>
 
@@ -40,116 +36,81 @@ import { disConnect, connect } from '../ws'
 import {getDentistInfo} from '../apis/dentists'
 import Error from '../components/Error.vue'
 export default {
-  name: 'nav-bar',
+  name: 'nav-tabs',
+   
 
-  setup() {
-    onMounted(() => {
-      const store = useStore()
-      const router = useRouter()
+  data() {
+    return {
+      
+       token:false,
+       store:null,
+       dentistDetails:null,
+       router:null
+    }
+  },
+  async mounted()  {
+      this.store = useStore()
+      this.router = useRouter()
       const route = useRoute()
       
+      this.token = localStorage.getItem('token')
+      if ((this.token) ) {
+        this.dentistDetails = await getDentistInfo()
+      this.store.dispatch('dentist', this.dentistDetails)
+      connect(this.dentistDetails.id)
+
+      if(this.dentistDetails.admin){
+        this.$router.push('/account')
+      }else{
+        this.$router.push('/home')
+      }
       
-      defineDentist().then((dentistDetails) => {
+      } else if ((!this.token) && ![ '/login'].includes(route.path)) {
+        this.router.push('/login')
+      }
+
+     
+   /*    defineDentist().then((dentistDetails) => {
         
         connect(dentistDetails.id)
-        
-      if (store.dentist && [ '/login'].includes(route.path)) {
-        router.push('/home')
-      } else if (!store.dentist && ![ '/login'].includes(route.path)) {
-        router.push('/login')
-      }
+       
     }).catch(error=>{console.log(error)});
+ */
+    },
 
-    })
+    methods:{
 
-    const store = useStore()
-    const router = useRouter()
-    const handleLogout = () => {
+      handleLogout :function () {
+        
       disConnect()
       localStorage.removeItem('token')
-      store.dispatch('dentist', null)
-      router.push('/login')
-    }
+      this.store.dispatch('dentist', null)
+      this.dentistDetails=null;
+      this.router.push('/login')
 
-    const defineDentist = async () => {
-      const dentistDetails = await getDentistInfo()
-      store.dispatch('user', dentistDetails)
-      return dentistDetails
-    }
-
-    return { handleLogout }
-  },
-  computed: {
+    },
     ...mapGetters(['dentist'])
-  }
+
+    },
+  
+   
+
+    
+
+    /* const defineDentist = async () => {
+      const dentistDetails = await getDentistInfo()
+      this.store.dispatch('dentist', dentistDetails)
+      return dentistDetails
+    } */
+
+   
+  /* computed: {
+    ...mapGetters(['dentist'])
+  } */
 }
 </script>
 
 
-<!-- <template>
-  <nav class="navtab">
-
-    <div class="left-links">
-     <RouterLink class="tab" to="/">Home</RouterLink>
-    </div>
-
-    <div class="right-links">
-    <b-dropdown >
-      <template #button-content>
-        <span class="account-button">Account</span>
-      </template>
-      <b-dropdown-item to="/login">Log In</b-dropdown-item>
-      <b-dropdown-item to="/register">Register</b-dropdown-item>
-      <b-dropdown-divider></b-dropdown-divider>
-      <b-dropdown-item to="/account">Account</b-dropdown-item>
-    </b-dropdown>
-    </div>
-
-  </nav>
-</template> -->
-
-<!-- <script>
-import { RouterLink } from 'vue-router';
-import { mapGetters, useStore } from 'vuex'
-import { useRouter, useRoute } from 'vue-router'
-import { onMounted } from 'vue'
-
-export default {
-  name: 'NavTabs',
-
-  
-  setup() {
-    onMounted(() => {
-      const store = useStore()
-      const router = useRouter()
-      const route = useRoute()
-      
-      if (store.user && ['/', '/login', '/signup'].includes(route.path)) {
-        router.push('/home')
-      } else if (!store.user && !['/', '/login', '/signup'].includes(route.path)) {
-        router.push('/login')
-      }
-      
-    })
-    const store = useStore()
-    const router = useRouter()
-    const handleLogout = () => {
-      localStorage.removeItem('token')
-      store.dispatch('dentist', null)
-      router.push('/login')
-    }
-
-    return { handleLogout }
-  },
-  computed: {
-    ...mapGetters(['user'])
-  }
-,
-  components: {
-    RouterLink,
-  }
-}
-</script> -->
 
 <style scoped>
 .navtab {

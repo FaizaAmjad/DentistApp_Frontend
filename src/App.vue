@@ -7,10 +7,7 @@ export default {
     WebHeaderVue,
     WebFooter,
   },
-/*  async created() {
-        const response = await axios.get('dentist');
-        this.$store.dispatch('dentist', response.data);
-        } */
+
 
 }
 </script>
