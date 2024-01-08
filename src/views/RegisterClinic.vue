@@ -66,19 +66,11 @@
             const clinic = await createClinic(
           this.form.clinicName,
           this.form.address,
-          )
+          )      
             
-                  
-            
-        // Check the status code to determine if the registration was successful
-         if (response.status === 201) {
           console.log('Registration successful');
           alert('Registered');
           this.$router.push('/account')
-        } else {
-          console.error('Registration failed with status:', response.status);
-          alert('Registration unsuccessful');
-        } 
       } catch (error) {
 
         console.error('An error occurred during registration:', error);
