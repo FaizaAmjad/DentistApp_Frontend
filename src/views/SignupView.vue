@@ -161,7 +161,7 @@ export default {
         } else if(error.response.data === 'Dentist already exists'){
           this.error = 'This dentist is already registered.'
         } else if(error.response.data === 'Password is wrong'){
-          this.error = 'Passwords do not match.'
+          this.error = 'Password missing.'
         } else if(error.response.status === 500){
           this.error = 'Server error. Please try again later.'
         } else {
