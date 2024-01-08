@@ -111,7 +111,15 @@ export default {
         this.$router.push('/home')
       
       } catch (error) {
-        this.error = 'En error occurred.'
+        if (error.response.data === 'Slot already exists for that time') {
+          this.error = 'Slot already exists for that time. Select a different time.'
+        } else if (error.response.data === 'To be able to create a slot, you have to be assigned to a clinic') {
+          this.error = 'To be able to create a slot, you have to be assigned to a clinic. Please contact your admin.'
+        } else if (error.response.data === 'Input missing data, All data required') {
+          this.error = 'Input missing data, All data required. Please fill in all fields.'
+        } else {
+        this.error = 'An error occurred.'
+        }
       }
     }
   }
