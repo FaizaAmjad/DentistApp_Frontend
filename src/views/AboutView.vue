@@ -7,7 +7,7 @@
       <h3>Welcome to our world of dental excellence and care.</h3>
       
       <h3 class="about-description"> 
-        Welcome to Tooth Fairy Dentist Hub, the exclusive platform for registered dentists affiliated with the Tooth Fairy organization in Gothenburg.
+        Welcome to Tooth Fairy Dentist Hub, the exclusive platform for registered dentists affiliated with the Tooth Fairy organization in Sweden.
       </h3>
      
       <div class="about-text">
@@ -35,7 +35,7 @@
          <h5>
           Join Tooth Fairy Dentist Hub today and embark on a journey into a world of streamlined dental practice management. Your success is our priority, and Tooth Fairy Dentist Hub is here to support you every step of the way. Because in the world of dentistry, excellence begins with efficient management.
          </h5>
-         <p> <RouterLink class="options" to="/register">Sign Up</RouterLink>   <RouterLink class="options" to="/login">Log In</RouterLink>  </p>
+         <p>  <RouterLink class="options" to="/login">Log In</RouterLink>  </p>
         
       </div> 
      </div>
