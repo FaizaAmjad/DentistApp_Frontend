@@ -44,6 +44,14 @@ npm run lint
 - Appointment Handling: <br>Simplified appointment registration, visualization, and editing.
 - Personalized Schedules: <br>Dentists can manage their schedules and personal details effectively.
 ## Visuals
+#### Dentist Schedule
+![Dentist Schedule](image.png)
+
+#### Prompt up notification for appointment booked
+![Prompt-up notification for appointment booked](image-1.png)
+
+#### Register Slots Page
+![Register slots page](image-2.png)
 
 
 ## Usage
