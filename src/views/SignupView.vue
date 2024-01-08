@@ -152,9 +152,10 @@ export default {
         )
 
         //const allClinics = await getClinics()
-      
+        alert('Dentist registered')
+        this.$router.push('/account')
       } catch (error) {
-        this.error = 'En error occurred.'
+        this.error = 'An error occurred.'
       }
     }
   }

@@ -74,6 +74,7 @@
          if (response.status === 201) {
           console.log('Registration successful');
           alert('Registered');
+          this.$router.push('/account')
         } else {
           console.error('Registration failed with status:', response.status);
           alert('Registration unsuccessful');

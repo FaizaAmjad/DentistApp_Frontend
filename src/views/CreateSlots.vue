@@ -107,8 +107,8 @@ export default {
           this.dentistDetails._id,
           this.dentistDetails.clinic_id
         )
-
-        this.$router.push('/')
+        alert('Slot created!')
+        this.$router.push('/home')
       
       } catch (error) {
         this.error = 'En error occurred.'
