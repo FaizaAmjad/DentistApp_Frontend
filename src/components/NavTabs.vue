@@ -16,9 +16,10 @@
       <template #button-content>
         <span class="account-button">Account</span>
       </template>
-      <b-dropdown-item v-if="!store?.getters.dentist.admin" to="/create-slots">Slots Management</b-dropdown-item>
-      <b-dropdown-item v-if="store?.getters.dentist.admin" to="/signup">Create Dentist</b-dropdown-item>
-      <b-dropdown-item v-if="store?.getters.dentist.admin" to="/registerClinic">Create Clinic</b-dropdown-item>
+      <b-dropdown-item v-if="!dentist.admin" to="/create-slots">Slots Management</b-dropdown-item>
+      <b-dropdown-item v-if="!dentist.admin" to="/create-emergencySlot">Emergency Slots Management</b-dropdown-item>
+      <b-dropdown-item v-if="dentist.admin" to="/signup">Create Dentist</b-dropdown-item>
+      <b-dropdown-item v-if="dentist.admin" to="/registerClinic">Create Clinic</b-dropdown-item>
       <b-dropdown-item to="/account">Account</b-dropdown-item>
       <b-dropdown-item v-if="!store?.getters.dentist.admin" to="/home">Home</b-dropdown-item>
       <b-dropdown-item  @click="handleLogout">logout</b-dropdown-item>
@@ -32,8 +33,6 @@
 import { mapGetters, useStore } from 'vuex'
 import { useRouter, useRoute } from 'vue-router'
 import { onMounted } from 'vue'
-import { disConnect, connect } from '../ws'
-import {getDentistInfo} from '../apis/dentists'
 import Error from '../components/Error.vue'
 export default {
   name: 'nav-tabs',

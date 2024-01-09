@@ -27,7 +27,7 @@ export default {
 <style>
 #app {
   background-color: rgba(74, 100, 161, 0.903);
-  height: 100vh;
+  height:100vh;
 }
 .calendar-container {
   background-color: #f8f8f8; /* Light gray background */
