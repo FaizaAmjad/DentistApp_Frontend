@@ -232,8 +232,10 @@ export default {
    const events= allSlots.map( async event=>{
      const startDate = new Date(event.start)
      const endDate = new Date(event.end)
-     const userData=event.patient_id? await getUser(event.patient_id):undefined;
-
+     let userData=undefined;
+     if(event.patient_id){
+         userData= await getUser(event.patient_id);
+     }
      
 
      return {  
@@ -246,7 +248,6 @@ export default {
        colorScheme: event.booked?"darkBlue":"darkGreen",
        isEditable: true,
        id: event._id,
-       description: " iam ur teeth ",
        booked:event.booked?true:false
        
       }
