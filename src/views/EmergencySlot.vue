@@ -1,5 +1,5 @@
 <template>
-  <div class="row">
+  <div class="row" id="specialPage">
     <div class="col-md-6 offset-md-3">
       <div class="auth-wrapper">
         <div class="auth-inner">
@@ -166,6 +166,11 @@ export default {
 button {
   background-color: var(--bs-success);
   color: var(--button-letter);
+}
+
+#specialPage {
+  height: 200%;
+  background-color: rgba(74, 100, 161, 0.903);
 }
 
 .reservations {
