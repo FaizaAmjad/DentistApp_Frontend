@@ -3,6 +3,7 @@
       <div class="container">
   
         <div class="registration-box">
+          <Error v-if="this.error!==''" :error="this.error"></Error>
   
           <h1>Register Clinic</h1>
           <h2>Enter the clinic details below for registration.</h2>
@@ -29,6 +30,9 @@
   import Error from '../components/Error.vue'
   import {createClinic}  from '../apis/booking'
   export default {
+    components: {
+      Error
+    },
     mounted() {
       document.body.style.backgroundColor = '#989898'
       
@@ -72,9 +76,18 @@
           alert('Registered');
           this.$router.push('/account')
       } catch (error) {
-
         console.error('An error occurred during registration:', error);
-        alert('Registration unsuccessful');
+        if (error.response.data === 'Input missing data, All input fields are required to be filled.'){
+          this.error='All input fields are required to be filled.'
+        } else if (error.response.data === 'Clinic already exists'){
+          this.error = 'This clinic already exists.'
+        } else if (error.response.data === 'Forbidden. Only admins can perform this action.'){
+          this.error = 'This action needs admin privilege.'
+        } else if(error.response.status === 500){
+          this.error = 'Server error. Please try again later.'
+        } else {
+        this.error='Registration unsuccessful. Please try again later.'
+        }
       }
         }       
       }, 
