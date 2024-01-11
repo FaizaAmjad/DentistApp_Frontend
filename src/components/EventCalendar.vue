@@ -31,7 +31,7 @@
          class="close-flyout" 
          type="submit" 
          variant="primary" 
-         @click="bookEvent(props.eventDialogData.id)"
+         @click="bookEvent(props)"
          >
         Book!
         </button>
@@ -41,7 +41,7 @@
         <button
         v-if="props.eventDialogData.booked"
         class="close-flyout" 
-        @click="unBookEvent(props.eventDialogData.id)"
+        @click="unBookEvent(props)"
         >
         UnBook!
         </button>
@@ -257,7 +257,8 @@ export default {
    
     },
 
-    async bookEvent(eventId) {
+    async bookEvent(props) {
+      const eventId=props.eventDialogData.id
       try {
         if (!this.validateEmail(this.email)) {
           alert('Please enter a valid email address.');
@@ -279,7 +280,7 @@ export default {
        
         await book(eventId, user._id);
         
-        this.props.closeEventDialog(eventId)
+        props.closeEventDialog(eventId)
         /* this.$emit('close-event-dialog'); */
       } catch (error) {
         console.error('Error booking event:', error);
@@ -290,7 +291,7 @@ export default {
             alert('Invalid patients creadentials.');
           }
         }else {
-       populateEvents()
+       this.populateEvents()
         }
       }
     },
@@ -300,13 +301,14 @@ export default {
       return emailRegex.test(email);
     },
 
-    async unBookEvent(eventId) {
+    async unBookEvent(props) {
+      const eventId=props.eventDialogData.id
       try {
         
         await unBook(eventId);
         
         
-        this.props.closeEventDialog(eventId)
+        props.closeEventDialog(eventId)
       } catch (error) {
         console.error('Error unbooking event:', error);
         if (error.response) {
@@ -316,7 +318,7 @@ export default {
             alert('Invalid patients creadentials.');
           }
         }else {
-        populateEvents()
+        this.populateEvents()
         }
       }
     },
