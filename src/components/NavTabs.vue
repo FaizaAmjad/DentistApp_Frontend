@@ -21,6 +21,7 @@
       <b-dropdown-item v-if="store?.getters.dentist.admin" to="/signup">Create Dentist</b-dropdown-item>
       <b-dropdown-item v-if="store?.getters.dentist.admin" to="/registerClinic">Create Clinic</b-dropdown-item>
       <b-dropdown-item to="/account">Account</b-dropdown-item>
+      <b-dropdown-item to="/adminPage">Admin</b-dropdown-item>
       <b-dropdown-item v-if="!store?.getters.dentist.admin" to="/home">Home</b-dropdown-item>
       <b-dropdown-item  @click="handleLogout">logout</b-dropdown-item>
     </b-dropdown>

@@ -21,3 +21,19 @@ export const getEmergencySlots = async (date) => {
     })
     return response.data
 }
+
+export const modifyBarrierScore = async (newLow, newMedium, newHigh) => {
+    const response = await Api().put('emergency-slots/barrier', {
+        newLow: newLow,
+        newMedium: newMedium,
+        newHigh: newHigh
+    })
+    return response.data
+}
+
+export const modifyAvailability = async (newAvailability) => {
+    const response = await Api().put('emergency-slots/availability', {
+        availability: newAvailability
+    })
+    return response.data
+}

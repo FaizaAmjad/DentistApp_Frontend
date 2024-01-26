@@ -5,6 +5,7 @@ import LogIn from '../views/LogIn.vue'
 import AccountView from '../views/AccountView.vue';
 import RegisterClinic from '../views/RegisterClinic.vue'
 import EmergencySlot from '../views/EmergencySlot.vue'
+import AdminPage from '../views/AdminPage.vue'
 
 
 const router = createRouter({
@@ -60,6 +61,11 @@ const router = createRouter({
       path: '/create-emergencySlot',
       name: 'emergencySlot',
       component: EmergencySlot
+    },
+    {
+      path: '/adminPage',
+      name: 'adminPage',
+      component: AdminPage
     }
     
     
